@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="collective.aaf.various"
+               version="1"
+               handler="collective.aaf.setuphandlers.setupVarious"
+               title="collective.aaf: miscellaneous import steps">
+    <dependency step="metadata" />
+    Various import steps that are not handled by GS import/export
+    handlers.
+  </import-step>
+</import-steps>

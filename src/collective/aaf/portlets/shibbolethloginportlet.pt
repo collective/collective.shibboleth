@@ -1,24 +1,55 @@
+<tal:block condition="view/show"
+           i18n:domain="collective.aaf">
+
+<script type="text/javascript" tal:content="view/wayf_options">
+//Options for WAYF
+</script>
+<script type="text/javascript"><!--
+var wayf_sp_samlDSURL = wayf_sp_handlerURL + "/Login";
+var wayf_width = "auto";
+var wayf_height = "auto";
+var wayf_show_remember_checkbox = true;
+var wayf_force_remember_for_session = false;
+var wayf_use_small_logo = true;
+var wayf_font_size = 12;
+var wayf_font_color = '#000000';
+var wayf_auto_login = true;
+var wayf_hide_after_login = true;
+var wayf_show_categories =  true;
+
+//AAF Options
+var wayf_set_remember_checkbox = false;
+var wayf_border_color = '#848484';
+var wayf_background_color = '#F0F0F0';
+</script>
 <dl class="portlet portletShibbolethLoginPortlet"
     i18n:domain="collective.aaf">
 
-    <dt class="portletHeader">
+    <dt class="portletHeader"
+        tal:define="header view/data/header"
+        tal:attributes="class python:header and 'portletHeader' or 'portletHeader titleless'">
         <span class="portletTopLeft"></span>
-        <span>
+        <span tal:condition="header"
+              tal:content="header">
            Header
         </span>
         <span class="portletTopRight"></span>
     </dt>
 
     <dd class="portletItem odd">
-        Body text
+        <script type="text/javascript" src="https://ds.aaf.edu.au/discovery/DS/embedded-wayf.js"></script>
+        <noscript>
+          <p>
+            <strong>Login:</strong> Javascript is not available for your web browser. Therefore, please <a href="/Shibboleth.sso/Login?target=">proceed manually</a>.
+          </p>
+        </noscript>
     </dd>
 
     <dd class="portletFooter">
         <span class="portletBottomLeft"></span>
-        <span>
-           Footer
-        </span>
         <span class="portletBottomRight"></span>
     </dd>
 
 </dl>
+
+</tal:block>

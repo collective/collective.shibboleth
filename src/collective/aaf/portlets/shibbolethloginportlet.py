@@ -1,17 +1,37 @@
+import re
 from zope.interface import Interface
 from zope.interface import implements
+from zope.component import getMultiAdapter
 
 from plone.app.portlets.portlets import base
+from plone.app.portlets.portlets.login import Renderer as LoginPortletRenderer
 from plone.portlets.interfaces import IPortletDataProvider
 
 from zope import schema
+from zope.schema.interfaces import ITextLine
 from zope.formlib import form
+from zope.formlib.textwidgets import TextWidget
+from Products.CMFCore.Expression import createExprContext, Expression
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.PythonScripts.standard import html_quote
 
 from collective.aaf import aafMessageFactory as _
 
 from zope.i18nmessageid import MessageFactory
 __ = MessageFactory("plone")
+
+
+class ITALESTextLine(ITextLine):
+    """ Marker interface for TALES fields.
+    """
+    pass
+
+class TALESTextLine(schema.TextLine):
+    implements(ITALESTextLine)
+
+class LongTextWidget(TextWidget):
+    displayWidth = 70
+
 
 class IShibbolethLoginPortlet(IPortletDataProvider):
     """A portlet
@@ -21,14 +41,40 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     same.
     """
 
-    # TODO: Add any zope.schema fields here to capture portlet configuration
-    # information. Alternatively, if there are no settings, leave this as an
-    # empty interface - see also notes around the add form and edit form
-    # below.
+    header = schema.TextLine(
+        title=__(u"Portlet header"),
+        description=__(u"Title of the rendered portlet"),
+        constraint=re.compile("[^\s]").match,
+        default=u"AAF (Institutional)",
+        required=True)
 
-    # some_field = schema.TextLine(title=_(u"Some field"),
-    #                              description=_(u"A field to use"),
-    #                              required=True)
+    wayf_URL = TALESTextLine(
+        title=_(u"WAYF Discovery URL (TALES)"),
+        description=_(u"URL of the WAYF to use"),
+        default=u"string:https://ds.aaf.edu.au/discovery/DS",
+        required=True)
+
+    wayf_sp_entityID = TALESTextLine(
+        title=_(u"Service Provider EntityID (TALES)"),
+        description=_(u"""
+EntityID of the Service Provider that protects this Resource.
+Value will be overwritten automatically if the page where the Embedded WAYF
+is displayed is called with a GET argument 'entityID' as automatically set by Shibboleth"""),
+        default=u"string:https://my-app.example.edu.au/shibboleth",
+        required=True)
+
+#// [Mandatory, if wayf_use_discovery_service = false]
+    wayf_sp_handlerURL = TALESTextLine(
+        title=_(u"Service Provider Handler URL (TALES)"),
+        description=_(u"URL to the Shibboleth handler for the given Service Provider."),
+        default=u"string:${portal_url}/Shibboleth.sso",
+        required=False)
+
+    wayf_return_url = TALESTextLine(
+        title=_(u"Return URL (TALES)"),
+        description=_(u"URL on this resource that the user shall be returned to after authentication"),
+        default=u"string:https://my-app.switch.ch/aai/index.php?page=show_welcome",
+        required=True)
 
 
 class Assignment(base.Assignment):
@@ -40,24 +86,24 @@ class Assignment(base.Assignment):
 
     implements(IShibbolethLoginPortlet)
 
-    # TODO: Set default values for the configurable parameters here
+    header = u"AAF"
 
-    # some_field = u""
-
-    # TODO: Add keyword parameters for configurable parameters here
-    # def __init__(self, some_field=u''):
-    #    self.some_field = some_field
-
-    def __init__(self):
-        pass
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     @property
     def title(self):
         """This property is used to give the title of the portlet in the
         "manage portlets" screen.
         """
-        return __(u"Shibboleth Login Portlet")
+        return self.header
 
+def execute_expression(expr, folder, portal, object=None):
+    """ Execute and expand a given TALES `expr`.
+    """
+    ec = createExprContext(folder, portal, object)
+    ec.contexts['context'] = ec.contexts['here']
+    return Expression(expr)(ec)
 
 class Renderer(base.Renderer):
     """Portlet renderer.
@@ -69,10 +115,44 @@ class Renderer(base.Renderer):
 
     render = ViewPageTemplateFile('shibbolethloginportlet.pt')
 
+    def __init__(self, context, request, view, manager, data):
+        super(Renderer, self).__init__(context, request, view, manager, data)
+        self.portal_state = getMultiAdapter((context, request),
+                                            name='plone_portal_state')
+        self.portal = self.portal_state.portal()
+
+    def show(self):
+        """ Determine if this portlet should be shown or not.
+        """
+        if not self.portal_state.anonymous():
+            return False
+        page = self.request.get('URL', '').split('/')[-1]
+        return page not in ('login_form', '@@register')
+
+    def wayf_options(self):
+        """ Generate JavaScript variables for the Embedded WAYF script.
+
+        Interpolates the TALES fields with the relevant values to produce
+        suitable output variables for configuration.
+        """
+        output = ""
+        for name, field in schema.getFields(IShibbolethLoginPortlet).iteritems():
+            if name.startswith('wayf_'):
+                value = getattr(self.data, name)
+                if ITALESTextLine.providedBy(field):
+                    value = execute_expression(value, self.context, self.portal)
+                output += 'var %s = "%s";\n' % (name, value)
+        return output
+
+
+#Customise field display length
+form_fields = form.Fields(IShibbolethLoginPortlet)
+for name, field in schema.getFields(IShibbolethLoginPortlet).iteritems():
+    if ITextLine.providedBy(field):
+        form_fields[name].custom_widget = LongTextWidget
 
 # NOTE: If this portlet does not have any configurable parameters, you can
 # inherit from NullAddForm and remove the form_fields variable.
-
 class AddForm(base.AddForm):
     """Portlet add form.
 
@@ -80,7 +160,7 @@ class AddForm(base.AddForm):
     zope.formlib which fields to display. The create() method actually
     constructs the assignment that is being added.
     """
-    form_fields = form.Fields(IShibbolethLoginPortlet)
+    form_fields = form_fields
 
     def create(self, data):
         return Assignment(**data)
@@ -96,4 +176,4 @@ class EditForm(base.EditForm):
     This is registered with configure.zcml. The form_fields variable tells
     zope.formlib which fields to display.
     """
-    form_fields = form.Fields(IShibbolethLoginPortlet)
+    form_fields = form_fields
