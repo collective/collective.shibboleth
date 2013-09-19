@@ -4,13 +4,5 @@
     i18n_domain="collective.aaf">
     <!-- -*- extra stuff goes here -*- -->
 
-  <browser:page
-      for="*"
-      name="login-shibboleth"
-      class=".loginendpointview.LoginEndpointView"
-      template="loginendpointview.pt"
-      allowed_interface=".loginendpointview.ILoginEndpointView"
-      permission="zope.Public"
-      />
 
 </configure>
