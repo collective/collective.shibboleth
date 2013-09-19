@@ -73,7 +73,7 @@ is displayed is called with a GET argument 'entityID' as automatically set by Sh
     wayf_return_url = TALESTextLine(
         title=_(u"Return URL (TALES)"),
         description=_(u"URL on this resource that the user shall be returned to after authentication"),
-        default=u"string:https://my-app.switch.ch/aai/index.php?page=show_welcome",
+        default=u"string:${portal_url}",
         required=True)
 
 
@@ -86,7 +86,11 @@ class Assignment(base.Assignment):
 
     implements(IShibbolethLoginPortlet)
 
-    header = u"AAF"
+    header = u"AAF (Institutional)"
+    wayf_URL = u"string:https://ds.aaf.edu.au/discovery/DS"
+    wayf_sp_entityID = u"string:https://my-app.example.edu.au/shibboleth"
+    wayf_sp_handlerURL = u"string:${portal_url}/Shibboleth.sso"
+    wayf_return_url = u"string:${portal_url}"
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -98,11 +102,19 @@ class Assignment(base.Assignment):
         """
         return self.header
 
-def execute_expression(expr, folder, portal, object=None):
+def execute_expression(expr, folder, portal, object=None, **kwargs):
     """ Execute and expand a given TALES `expr`.
+
+    Because the way in which portlets are rendered, the context needs
+    to be corrected to be the surrounding folder.
+
+    Also accepts arbitrary kwargs and applies them into the expression
+    context for execution.
     """
     ec = createExprContext(folder, portal, object)
     ec.contexts['context'] = ec.contexts['here']
+    for key, value in kwargs.iteritems():
+        ec.setLocal(key, value)
     return Expression(expr)(ec)
 
 class Renderer(base.Renderer):
@@ -129,6 +141,36 @@ class Renderer(base.Renderer):
         page = self.request.get('URL', '').split('/')[-1]
         return page not in ('login_form', '@@register')
 
+    def _execute_expression(self, value):
+        """ Execute an expression in the context of this renderer.
+        """
+        return execute_expression(value,
+                                  self.context,
+                                  self.portal,
+                                  view=self)
+
+    def login_url(self):
+        """ Generate a suitable login URL for non-JavaScript users.
+
+        The final ``target`` in the URL will be where the user is
+        redirected to from Shibboleth.
+        """
+        url = self._execute_expression(self.data.wayf_sp_handlerURL)
+        url += '/Login?target=%s' % self.return_url()
+        return url
+
+    def return_url(self):
+        """ Generate a suitable return URL to the current context.
+
+        The query string is passed along here for the ride because
+        the final ``logged_in`` script will redirect the user accordingly
+        to the actual content item.
+        """
+        url = self.portal_state.navigation_root_url() + '/logged_in'
+        if self.request.QUERY_STRING:
+            url += '?' + self.request.QUERY_STRING
+        return url
+
     def wayf_options(self):
         """ Generate JavaScript variables for the Embedded WAYF script.
 
@@ -136,11 +178,12 @@ class Renderer(base.Renderer):
         suitable output variables for configuration.
         """
         output = ""
-        for name, field in schema.getFields(IShibbolethLoginPortlet).iteritems():
+        for name, field in \
+            schema.getFields(IShibbolethLoginPortlet).iteritems():
             if name.startswith('wayf_'):
                 value = getattr(self.data, name)
                 if ITALESTextLine.providedBy(field):
-                    value = execute_expression(value, self.context, self.portal)
+                    value = self._execute_expression(value)
                 output += 'var %s = "%s";\n' % (name, value)
         return output
 

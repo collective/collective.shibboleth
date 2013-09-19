@@ -40,7 +40,7 @@ var wayf_background_color = '#F0F0F0';
         <script type="text/javascript" src="https://ds.aaf.edu.au/discovery/DS/embedded-wayf.js"></script>
         <noscript>
           <p>
-            <strong>Login:</strong> Javascript is not available for your web browser. Therefore, please <a href="/Shibboleth.sso/Login?target=">proceed manually</a>.
+          <strong>Login:</strong> Javascript is not available for your web browser. Therefore, please <a tal:attributes="href view/login_url" href="/Shibboleth.sso/Login?target=">proceed manually</a>.
           </p>
         </noscript>
     </dd>
