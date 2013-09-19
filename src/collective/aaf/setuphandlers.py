@@ -37,7 +37,18 @@ def setupVarious(context, site=None):
     plugin.http_locality = ('HTTP_ORGANIZATIONNAME',)
     plugin.http_state = ()
     plugin.http_country = ()
-
-    # Configure shibboleth portlet for AAF URLs
-    # Other urls are application specific.
-    #wayf_URL = "https://ds.aaf.edu.au/discovery/DS
+    plugin.authzMappings = [
+        {'groupid': [],
+         'roles': {'Shibboleth Authenticated': 'on',
+                   'Contributor': '',
+                   'Editor': '',
+                   'Manager': '',
+                   'Owner': '',
+                   'Reader': '',
+                   'Reviewer': '',
+                   'Site Administrator': ''},
+         'userid': '',
+         'values': {'HTTP_REMOTE_USER': ''},
+         'version': 1
+        }
+    ]
