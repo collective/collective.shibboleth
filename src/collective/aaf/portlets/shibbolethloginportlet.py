@@ -73,7 +73,7 @@ is displayed is called with a GET argument 'entityID' as automatically set by Sh
     wayf_return_url = TALESTextLine(
         title=_(u"Return URL (TALES)"),
         description=_(u"URL on this resource that the user shall be returned to after authentication"),
-        default=u"string:${view/login_url}",
+        default=u"string:${view/return_url}",
         required=True)
 
 
@@ -90,7 +90,7 @@ class Assignment(base.Assignment):
     wayf_URL = u"string:https://ds.aaf.edu.au/discovery/DS"
     wayf_sp_entityID = u"string:https://my-app.example.edu.au/shibboleth"
     wayf_sp_handlerURL = u"string:${portal_url}/Shibboleth.sso"
-    wayf_return_url = u"string:${portal_url}"
+    wayf_return_url = u"string:${view/return_url}"
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
