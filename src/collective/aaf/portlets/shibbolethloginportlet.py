@@ -16,6 +16,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import html_quote
 
 from collective.aaf import aafMessageFactory as _
+from collective.aaf import utils
 
 from zope.i18nmessageid import MessageFactory
 __ = MessageFactory("plone")
@@ -75,6 +76,8 @@ is displayed is called with a GET argument 'entityID' as automatically set by Sh
         description=_(u"URL on this resource that the user shall be returned to after authentication"),
         default=u"string:${view/return_url}",
         required=True)
+
+
 
 
 class Assignment(base.Assignment):
@@ -184,7 +187,8 @@ class Renderer(base.Renderer):
                 value = getattr(self.data, name)
                 if ITALESTextLine.providedBy(field):
                     value = self._execute_expression(value)
-                output += 'var %s = "%s";\n' % (name, value)
+                output += 'var %s = %s;\n' % (name,
+                                              utils.escape_javascript(value))
         return output
 
 

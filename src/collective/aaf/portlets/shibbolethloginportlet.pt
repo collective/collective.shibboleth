@@ -21,6 +21,7 @@ var wayf_show_categories =  true;
 var wayf_set_remember_checkbox = false;
 var wayf_border_color = '#848484';
 var wayf_background_color = '#F0F0F0';
+-->
 </script>
 <dl class="portlet portletShibbolethLoginPortlet"
     i18n:domain="collective.aaf">
