@@ -41,6 +41,7 @@ setup(name='collective.aaf',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'collective.monkeypatcher',
           # -*- Extra requirements: -*-
       ],
       extras_require={'test': ['plone.app.testing']},
