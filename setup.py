@@ -42,6 +42,7 @@ setup(name='collective.aaf',
       install_requires=[
           'setuptools',
           'collective.monkeypatcher',
+          'Products.AutoUserMakerPASPlugin>=0.8b2dev',
           # -*- Extra requirements: -*-
       ],
       extras_require={'test': ['plone.app.testing']},
