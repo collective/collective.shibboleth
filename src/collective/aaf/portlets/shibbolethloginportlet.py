@@ -171,6 +171,8 @@ class Renderer(base.Renderer):
         """
         url = self.portal_state.navigation_root_url() + '/logged_in'
         if self.request.QUERY_STRING:
+            if self.request.QUERY_STRING.endswith('/logged_out'):
+                self.request.QUERY_STRING = self.request.QUERY_STRING.replace('/logged_out', '')
             url += '?' + self.request.QUERY_STRING
         return url
 

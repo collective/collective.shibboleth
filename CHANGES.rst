@@ -4,6 +4,9 @@ Changelog
 0.1-dev (unreleased)
 --------------------
 
+- If logging in again from a logged_out view, then strip the view from
+  the ``came_from`` query string parameter. 
+  [davidjb]
 - Notify users of their temporary passwords being generated on first login.
   [davidjb]
 - Monkey patch the password generation function AutoUserMakerPASPlugin
