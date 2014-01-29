@@ -4,7 +4,9 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Noted that latest collective.pluggablelogin released. Package now
+  depends on this latest version or later.
+  [davidjb]
 
 
 1.0 (2014-01-29)

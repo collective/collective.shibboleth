@@ -37,12 +37,11 @@ AAF-Specific
 Installation
 ============
 
-At the time of writing, this package relies upon two unreleased dependencies:
+At the time of writing, this package relies upon one unreleased dependency:
 
-* collective.pluggablelogin 
 * Products.AutoUserMakerPASPlugin
 
-New versions of these packages will be released and available on PyPI
+A new version of this package will be released and available on PyPI
 as soon as possible.  In the meantime, installation from GitHub via a tool
 such as `mr.developer <https://pypi.python.org/pypi/mr.developer>`_ is
 recommended.

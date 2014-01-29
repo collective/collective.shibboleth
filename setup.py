@@ -43,7 +43,7 @@ setup(name='collective.aaf',
       install_requires=[
           'setuptools',
           'collective.monkeypatcher',
-          'collective.pluggablelogin>=1.1dev',
+          'collective.pluggablelogin>=1.1',
           'Products.AutoUserMakerPASPlugin>=0.8b2dev',
           # -*- Extra requirements: -*-
       ],
