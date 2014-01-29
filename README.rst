@@ -72,7 +72,7 @@ In a Plone context, using ``collective.aaf``, you thus have two choices:
 
 The first option is able to be more seamless as you can utilise a
 login portlet inside Plone, rather than having a jarring jump to a WAYF or IdP
-page. It also means you can provide an embedded Identity Provider listing
+page. It also means you can provide an Identity Provider listing
 *embedded* within your site, making the login process as clean as possible.
 
 How Plone handles authentication
