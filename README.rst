@@ -78,11 +78,11 @@ page. It also means you can provide an Identity Provider listing
 How Plone handles authentication
 --------------------------------
 
-By default, the underlying PAS plugin (``Products.AutoUserMakerPASPlugin``)that
-listens for Shibboleth headers is configured to accept these on *any* site URL.
-For a default Plone install, a ``plone.session`` PAS plugin is configured (the
-one that normally handles authentication), and this will create a session and
-take over authentication from here on out whilst a user is logged in. 
+By default, the underlying PAS plugin (``Products.AutoUserMakerPASPlugin``)
+that listens for Shibboleth headers is configured to accept these on *any* site
+URL.  For a default Plone install, a ``plone.session`` PAS plugin is configured
+(the one that normally handles authentication), and this will create a session
+and take over authentication from here on out whilst a user is logged in. 
 
 To most efficiently manage this, the suggestion is to configure Shibboleth to
 protect just the ``logged_in`` view for Plone, and configure this URL as the
@@ -92,38 +92,34 @@ This way, you can be sure that Shibboleth attributes will only be passed
 at this specific path (only used during login, typically),
 thus reducing the load time and processing required for the rest of the site.
 
-Note
-~~~~
+.. note::
 
-This configuration may or may not suit your exact requirements depending on
-your configuration, federation (if not AAF), or other aspects. For example, if
-you require that your user's authentication in Plone is directly tied to their
-Shibboleth session, then you may wish to disable Plone's session plugin's
-ability to ``authenticateCredentials`` and to configure the Shibboleth SP such
-that the entire Plone URL/path is protected.  This will result in the upstream
-Shibboleth instance passing along authentication headers for every request.
-Note that this is arguably ineffecient since a both the Shibboleth SP and
-Plone's user setup machinery are being invoked for each and every request.
+   This configuration may or may not suit your exact requirements depending on
+   your configuration, federation (if not AAF), or other aspects. For example,
+   if you require that your user's authentication in Plone is directly tied to
+   their Shibboleth session, then you may wish to disable the Plone session
+   plugin's ability to ``authenticateCredentials`` and to configure the
+   Shibboleth SP such that the entire Plone URL/path is protected.  This will
+   result in the upstream Shibboleth instance passing along authentication
+   headers for every request.  Note that this is arguably ineffecient since
+   both the Shibboleth SP and Plone's user setup machinery are being invoked
+   for each and every request.
 
-All that said, the above suggestion seems to be a solid base for a best
-practice.
 
 Embedded WAYF portlet
 ---------------------
 
-Uses the Shibboleth Embedded WAYF as provided by:
+This package uses the Shibboleth Embedded WAYF as provided by:
+
 https://ds.aaf.edu.au/discovery/DS/embedded-wayf.js/snippet.html
 or 
 https://wayf.switch.ch/SWITCHaai/WAYF/embedded-wayf.js/snippet.html
 
--- configurable in the Shibboleth portlet.  This should probably be
-refactored out into its own portlet later on.
+and is configurable in the Shibboleth portlet.  
 
-Future
-------
-
-The Shibboleth project also has an `Embedded Discovery Service
+This could probably be refactored out into its own portlet later on. However,
+the Shibboleth project also has an `Embedded Discovery Service
 <https://wiki.shibboleth.net/confluence/display/EDS10/Embedded+Discovery+Service>`_
-that exists and can be self-hosted.  This portlet will likely be migrated to
-that at some point in the near future.
+that exists and can be self-hosted.  The portlet provided by this package
+will likely become modified to use this at some point in the near future.
 
