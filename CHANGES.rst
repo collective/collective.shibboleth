@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.1-dev (unreleased)
---------------------
+1.0 (2014-01-29)
+----------------
 
 - If logging in again from a logged_out view, then strip the view from
   the ``came_from`` query string parameter. 
