@@ -3,14 +3,19 @@
 Introduction
 ============
 
-Authentication integration layer for the Australian Access Federation (AAF) and
-Plone
+This package provides an integration layer for Plone for the `Australian
+Access Federation <http://aaf.edu.au>`_ (AAF), a Shibboleth-powered
+authentication federation.
 
 Features
 ========
 
 Generic
 -------
+
+The following features could and probably should be refactored into a 
+general ``collective.shibboleth`` package.  For the inclined, please contact
+us and we'll work through it together.
 
 * Embedded WAYF portlet (suitable for SWTICH-compatible Shibboleth Discovery
   Services (such as SWITCHaai, Australian Access Federation (AAF), and possibly
@@ -21,9 +26,6 @@ Generic
 * Assigns the ``Shibboleth Authenticated`` role to all users logging in
   using this method.
 
-The following features could and probably should be refactored into a 
-general ``collective.shibboleth`` package.  For the inclined, please contact
-us and we'll work through it together.
 
 AAF-Specific
 ------------
@@ -31,6 +33,19 @@ AAF-Specific
 * Configures the underlying authentication plugin to load user data from
   the relevant AAF attributes.
 * Portlet value defaults are those from the AAF.
+
+Installation
+============
+
+At the time of writing, this package relies upon two unreleased dependencies:
+
+* collective.pluggablelogin 
+* Products.AutoUserMakerPASPlugin
+
+New versions of these packages will be released and available on PyPI
+as soon as possible.  In the meantime, installation from GitHub via a tool
+such as `mr.developer <https://pypi.python.org/pypi/mr.developer>`_ is
+recommended.
 
 Techinical details
 ==================
