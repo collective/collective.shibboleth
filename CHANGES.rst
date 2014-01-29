@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1 (unreleased)
+1.1 (2014-01-30)
 ----------------
 
 - Noted that latest collective.pluggablelogin released. Package now
