@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2 (unreleased)
+1.2 (2014-02-19)
 ----------------
 
 - Made the embedded WAYF JavaScript URL depend on the portlet's
