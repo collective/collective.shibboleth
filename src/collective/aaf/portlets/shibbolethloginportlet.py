@@ -152,15 +152,19 @@ class Renderer(base.Renderer):
                                   self.portal,
                                   view=self)
 
+    def embed_url(self):
+        """ Generate the JavaScript embed URL for the federation.
+        """
+        return self._execute_expression(self.data.wayf_URL) + '/embedded-wayf.js'
+
     def login_url(self):
         """ Generate a suitable login URL for non-JavaScript users.
 
         The final ``target`` in the URL will be where the user is
         redirected to from Shibboleth.
         """
-        url = self._execute_expression(self.data.wayf_sp_handlerURL)
-        url += '/Login?target=%s' % self.return_url()
-        return url
+        return self._execute_expression(self.data.wayf_sp_handlerURL) \
+                + '/Login?target=' + self.return_url()
 
     def return_url(self):
         """ Generate a suitable return URL to the current context.

@@ -4,7 +4,9 @@ Changelog
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Made the embedded WAYF JavaScript URL depend on the portlet's
+  configured URL rather than being hardcoded.
+  [davidjb]
 
 
 1.1 (2014-01-30)
