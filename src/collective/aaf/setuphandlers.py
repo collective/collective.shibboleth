@@ -29,6 +29,7 @@ def setupVarious(context, site=None):
     acl = getToolByName(site, 'acl_users')
     plugin = acl['AutoUserMakerPASPlugin']
     plugin.strip_domain_names = 0 #Domain name stripping
+    plugin.auto_update_user_properties = 1 #Auto-update user properties on re-login
     plugin.http_remote_user = ('HTTP_AUEDUPERSONSHAREDTOKEN',
                                'HTTP_REMOTE_USER',)
     plugin.http_commonname = ('HTTP_DISPLAYNAME', 'HTTP_COMMONNAME')

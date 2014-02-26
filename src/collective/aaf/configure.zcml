@@ -27,6 +27,16 @@
       description="Installs the collective.aaf package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
+  <genericsetup:upgradeStep
+      source="*"
+      destination="0002"
+      title="Update user property setting for auth plugin"
+      description="Configures AutoUserMakerPASPlugin to automatically update user properties."
+      profile="collective.aaf:default"
+      handler=".upgrades.upgrade_0001_to_0002"
+      />
+
   <!-- -*- extra stuff goes here -*- -->
 
   <include package=".browser" />
