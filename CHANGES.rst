@@ -10,8 +10,8 @@ Changelog
 1.3 (2014-02-26)
 ----------------
 
-- Nothing changed yet.
-
+- Configure AutoUserMakerPASPlugin to auto-update user properties on login.
+  [davidjb]
 
 1.2 (2014-02-19)
 ----------------
