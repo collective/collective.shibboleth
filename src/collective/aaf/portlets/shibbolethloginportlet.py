@@ -46,7 +46,7 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
         title=__(u"Portlet header"),
         description=__(u"Title of the rendered portlet"),
         constraint=re.compile("[^\s]").match,
-        default=u"AAF (Institutional)",
+        default=u"Australian Institutions Login",
         required=True)
 
     wayf_URL = TALESTextLine(

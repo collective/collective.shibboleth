@@ -4,7 +4,8 @@ Changelog
 1.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Make portlet header friendlier.
+  [davidjb]
 
 
 1.3 (2014-02-26)
