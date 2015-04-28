@@ -186,16 +186,25 @@ class Renderer(base.Renderer):
         Interpolates the TALES fields with the relevant values to produce
         suitable output variables for configuration.
         """
-        output = ""
-        for name, field in \
-            schema.getFields(IShibbolethLoginPortlet).iteritems():
-            if name.startswith('wayf_'):
-                value = getattr(self.data, name)
-                if ITALESTextLine.providedBy(field):
-                    value = self._execute_expression(value)
-                output += 'var %s = %s;\n' % (name,
-                                              utils.escape_javascript(value))
-        return output
+        options = {
+            "defaultLogo": "/shibboleth-ds/home-icon.png",
+            "defaultLogoWidth": 90,
+            "defaultLogoHeight": 80,
+            "defaultReturn": self.return_url(),
+            "helpURL": 'https://espaces.edu.au/help'
+        }
+        return json.dumps(options)
+
+        #output = ""
+        #for name, field in \
+            #schema.getFields(IShibbolethLoginPortlet).iteritems():
+            #if name.startswith('wayf_'):
+                #value = getattr(self.data, name)
+                #if ITALESTextLine.providedBy(field):
+                    #value = self._execute_expression(value)
+                #output += 'var %s = %s;\n' % (name,
+                                              #utils.escape_javascript(value))
+        #return output
 
 
 #Customise field display length

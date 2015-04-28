@@ -1,28 +1,7 @@
 <tal:block condition="view/show"
            i18n:domain="collective.aaf">
 
-<script type="text/javascript" tal:content="view/wayf_options">
-//Options for WAYF
-</script>
-<script type="text/javascript"><!--
-var wayf_sp_samlDSURL = wayf_sp_handlerURL + "/Login";
-var wayf_width = "auto";
-var wayf_height = "auto";
-var wayf_show_remember_checkbox = true;
-var wayf_force_remember_for_session = false;
-var wayf_use_small_logo = true;
-var wayf_font_size = 12;
-var wayf_font_color = '#000000';
-var wayf_auto_login = true;
-var wayf_hide_after_login = true;
-var wayf_show_categories =  true;
-
-//AAF Options
-var wayf_set_remember_checkbox = false;
-var wayf_border_color = '#848484';
-var wayf_background_color = '#F0F0F0';
--->
-</script>
+<link rel="stylesheet" type="text/css" href="/shibboleth-ds/idpselect.css">
 <dl class="portlet portletShibbolethLoginPortlet"
     i18n:domain="collective.aaf">
 
@@ -38,8 +17,13 @@ var wayf_background_color = '#F0F0F0';
     </dt>
 
     <dd class="portletItem odd">
-        <script type="text/javascript" src="embedded-wayf.js"
-                tal:attributes="src view/embed_url"></script>
+        <!--<script type="text/javascript" src="embedded-wayf.js"-->
+                <!--tal:attributes="src view/embed_url"></script>-->
+        <script id="shibboleth-embedded-ds-options" type="text/json" tal:content="view/embedded_ds_options">
+            // Embedded Discovery Service options go here
+        </script>
+        <script src="/shibboleth-ds/idpselect_config.js" type="text/javascript" language="javascript"></script>
+        <script src="/shibboleth-ds/idpselect.js" type="text/javascript" language="javascript"></script>
         <noscript>
           <p>
           <strong>Login:</strong> Javascript is not available for your web browser. Therefore, please <a tal:attributes="href view/login_url" href="/Shibboleth.sso/Login?target=">proceed manually</a>.
