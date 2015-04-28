@@ -4,5 +4,10 @@
     i18n_domain="collective.aaf">
     <!-- -*- extra stuff goes here -*- -->
 
+    <browser:resourceDirectory
+        name="shibboleth-ds"
+        directory="shibboleth-ds"
+        />
+
 
 </configure>
