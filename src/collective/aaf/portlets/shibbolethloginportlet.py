@@ -89,7 +89,7 @@ class Assignment(base.Assignment):
 
     implements(IShibbolethLoginPortlet)
 
-    header = u"AAF (Institutional)"
+    header = u"Australian Institutions Login"
     wayf_URL = u"string:https://ds.aaf.edu.au/discovery/DS"
     wayf_sp_entityID = u"string:https://my-app.example.edu.au/shibboleth"
     wayf_sp_handlerURL = u"string:${portal_url}/Shibboleth.sso"
