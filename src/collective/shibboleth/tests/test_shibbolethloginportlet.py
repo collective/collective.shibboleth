@@ -8,8 +8,8 @@ from plone.portlets.interfaces import IPortletRenderer
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 
-from collective.aaf.portlets import shibbolethloginportlet
-from collective.aaf.portlets.tests.base_shibbolethloginportlet import TestCase
+from collective.shibboleth.portlets import shibbolethloginportlet
+from collective.shibboleth.portlets.tests.base_shibbolethloginportlet import TestCase
 
 
 class TestPortlet(TestCase):
@@ -18,8 +18,8 @@ class TestPortlet(TestCase):
         self.setRoles(('Manager',))
 
     def test_portlet_type_registered(self):
-        portlet = getUtility(IPortletType, name='collective.aaf.portlets.ShibbolethLoginPortlet')
-        self.assertEquals(portlet.addview, 'collective.aaf.portlets.ShibbolethLoginPortlet')
+        portlet = getUtility(IPortletType, name='collective.shibboleth.portlets.ShibbolethLoginPortlet')
+        self.assertEquals(portlet.addview, 'collective.shibboleth.portlets.ShibbolethLoginPortlet')
 
     def test_interfaces(self):
         # TODO: Pass any keywoard arguments to the Assignment constructor
@@ -28,7 +28,7 @@ class TestPortlet(TestCase):
         self.failUnless(IPortletDataProvider.providedBy(portlet.data))
 
     def test_invoke_add_view(self):
-        portlet = getUtility(IPortletType, name='collective.aaf.portlets.ShibbolethLoginPortlet')
+        portlet = getUtility(IPortletType, name='collective.shibboleth.portlets.ShibbolethLoginPortlet')
         mapping = self.portal.restrictedTraverse('++contextportlets++plone.leftcolumn')
         for m in mapping.keys():
             del mapping[m]

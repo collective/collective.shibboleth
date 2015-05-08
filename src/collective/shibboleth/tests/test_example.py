@@ -2,13 +2,13 @@ import unittest2 as unittest
 
 from Products.CMFCore.utils import getToolByName
 
-from collective.aaf.testing import \
-    COLLECTIVE_AAF_INTEGRATION_TESTING
+from collective.shibboleth.testing import \
+    COLLECTIVE_SHIBBOLETH_INTEGRATION_TESTING
 
 
 class TestExample(unittest.TestCase):
 
-    layer = COLLECTIVE_AAF_INTEGRATION_TESTING
+    layer = COLLECTIVE_SHIBBOLETH_INTEGRATION_TESTING
 
     def setUp(self):
         self.app = self.layer['app']
@@ -19,7 +19,7 @@ class TestExample(unittest.TestCase):
         """ Validate that our products GS profile has been run and the product
             installed
         """
-        pid = 'collective.aaf'
+        pid = 'collective.shibboleth'
         installed = [p['id'] for p in self.qi_tool.listInstalledProducts()]
         self.assertTrue(pid in installed,
                         'package appears not to have been installed')

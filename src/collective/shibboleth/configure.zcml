@@ -4,7 +4,7 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:monkey="http://namespaces.plone.org/monkey"
-    i18n_domain="collective.aaf">
+    i18n_domain="collective.shibboleth">
 
   <five:registerPackage package="." initialize=".initialize" />
   <i18n:registerTranslations directory="locales" />
@@ -22,19 +22,10 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="collective.aaf"
+      title="collective.shibboleth"
       directory="profiles/default"
-      description="Installs the collective.aaf package"
+      description="Installs the collective.shibboleth package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
-
-  <genericsetup:upgradeStep
-      source="*"
-      destination="0002"
-      title="Update user property setting for auth plugin"
-      description="Configures AutoUserMakerPASPlugin to automatically update user properties."
-      profile="collective.aaf:default"
-      handler=".upgrades.upgrade_0001_to_0002"
       />
 
   <!-- -*- extra stuff goes here -*- -->

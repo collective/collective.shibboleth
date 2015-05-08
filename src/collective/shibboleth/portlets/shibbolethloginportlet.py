@@ -15,8 +15,8 @@ from Products.CMFCore.Expression import createExprContext, Expression
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import html_quote
 
-from collective.aaf import aafMessageFactory as _
-from collective.aaf import utils
+from collective.shibboleth import shibbolethMessageFactory as _
+from collective.shibboleth import utils
 
 from zope.i18nmessageid import MessageFactory
 __ = MessageFactory("plone")
@@ -27,8 +27,10 @@ class ITALESTextLine(ITextLine):
     """
     pass
 
+
 class TALESTextLine(schema.TextLine):
     implements(ITALESTextLine)
+
 
 class LongTextWidget(TextWidget):
     displayWidth = 70
@@ -212,6 +214,7 @@ form_fields = form.Fields(IShibbolethLoginPortlet)
 for name, field in schema.getFields(IShibbolethLoginPortlet).iteritems():
     if ITextLine.providedBy(field):
         form_fields[name].custom_widget = LongTextWidget
+
 
 # NOTE: If this portlet does not have any configurable parameters, you can
 # inherit from NullAddForm and remove the form_fields variable.

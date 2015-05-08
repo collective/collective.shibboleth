@@ -1,9 +1,9 @@
 <tal:block condition="view/show"
-           i18n:domain="collective.aaf">
+           i18n:domain="collective.shibboleth">
 
 <link rel="stylesheet" type="text/css" href="/shibboleth-ds/idpselect.css">
 <dl class="portlet portletShibbolethLoginPortlet"
-    i18n:domain="collective.aaf">
+    i18n:domain="collective.shibboleth">
 
     <dt class="portletHeader"
         tal:define="header view/data/header"

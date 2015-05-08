@@ -9,35 +9,35 @@ from plone.testing import z2
 from zope.configuration import xmlconfig
 
 
-class CollectiveaafLayer(PloneSandboxLayer):
+class CollectiveshibbolethLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         # Load ZCML
-        import collective.aaf
+        import collective.shibboleth
         xmlconfig.file(
             'configure.zcml',
-            collective.aaf,
+            collective.shibboleth,
             context=configurationContext
         )
 
         # Install products that use an old-style initialize() function
-        #z2.installProduct(app, 'Products.PloneFormGen')
+        # z2.installProduct(app, 'Products.PloneFormGen')
 
 #    def tearDownZope(self, app):
 #        # Uninstall products installed above
 #        z2.uninstallProduct(app, 'Products.PloneFormGen')
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'collective.aaf:default')
+        applyProfile(portal, 'collective.shibboleth:default')
 
-COLLECTIVE_AAF_FIXTURE = CollectiveaafLayer()
-COLLECTIVE_AAF_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(COLLECTIVE_AAF_FIXTURE,),
-    name="CollectiveaafLayer:Integration"
+COLLECTIVE_SHIBBOLETH_FIXTURE = CollectiveshibbolethLayer()
+COLLECTIVE_SHIBBOLETH_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(COLLECTIVE_SHIBBOLETH_FIXTURE,),
+    name="CollectiveshibbolethLayer:Integration"
 )
-COLLECTIVE_AAF_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(COLLECTIVE_AAF_FIXTURE, z2.ZSERVER_FIXTURE),
-    name="CollectiveaafLayer:Functional"
+COLLECTIVE_SHIBBOLETH_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(COLLECTIVE_SHIBBOLETH_FIXTURE, z2.ZSERVER_FIXTURE),
+    name="CollectiveshibbolethLayer:Functional"
 )

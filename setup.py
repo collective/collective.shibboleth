@@ -11,7 +11,7 @@ long_description = (
     open('CHANGES.rst').read()
     + '\n')
 
-setup(name='collective.aaf',
+setup(name='collective.shibboleth',
       version=version,
       description="Authentication integration layer for the Australian Access Federation (AAF) and Plone",
       long_description=long_description,
@@ -29,10 +29,10 @@ setup(name='collective.aaf',
         "Programming Language :: Python :: 2.7",
         "Topic :: Software Development :: Libraries :: Python Modules",
       ],
-      keywords='plone aaf shibboleth authentication',
+      keywords='plone discovery service shibboleth authentication',
       author='David Beitey',
       author_email='david@davidjb.com',
-      url='https://github.com/collective/collective.aaf',
+      url='https://github.com/collective/collective.shibboleth',
       license='gpl',
       packages=find_packages('src'),
       package_dir={'': 'src'},

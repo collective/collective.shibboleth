@@ -14,9 +14,9 @@
              http://dev.plone.org/plone/ticket/9090) for more information on 
         internationalization with portlets or in plone in general -->
    <portlet
-     addview="collective.aaf.portlets.ShibbolethLoginPortlet"
+     addview="collective.shibboleth.portlets.ShibbolethLoginPortlet"
      title="Shibboleth Login Portlet"
-     description="Login portlet that displays an Embedded WAYF used for logging in to a Shibboleth-protected service."
+     description="Login portlet that displays an Embedded Discovery Service used for logging in to a Shibboleth-protected site."
      i18n:attributes="title; description"
    />
 

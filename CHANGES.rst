@@ -4,59 +4,13 @@ Changelog
 1.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
-
-1.5 (unreleased)
-----------------
-
-- Nothing changed yet.
-
-
-1.4 (2015-04-28)
-----------------
-
-- Make portlet header friendlier.
+- Change from a Embedded WAYF to Shibboleth's EDS.
+  [davidjb]
+- Remove old ``collective.aaf`` code from this package; that package now
+  depends on this one.
+  [davidjb]
+- Refactor from ``collective.aaf``, and turn collective.aaf into an AAF-specific
+  layer on top of this package.
   [davidjb]
 
 
-1.3 (2014-02-26)
-----------------
-
-- Configure AutoUserMakerPASPlugin to auto-update user properties on login.
-  [davidjb]
-
-1.2 (2014-02-19)
-----------------
-
-- Made the embedded WAYF JavaScript URL depend on the portlet's
-  configured URL rather than being hardcoded.
-  [davidjb]
-
-
-1.1 (2014-01-30)
-----------------
-
-- Noted that latest collective.pluggablelogin released. Package now
-  depends on this latest version or later.
-  [davidjb]
-
-
-1.0 (2014-01-29)
-----------------
-
-- If logging in again from a logged_out view, then strip the view from
-  the ``came_from`` query string parameter. 
-  [davidjb]
-- Notify users of their temporary passwords being generated on first login.
-  [davidjb]
-- Monkey patch the password generation function AutoUserMakerPASPlugin
-  to allow stronger passwords.
-  [davidjb]
-- Ensure users logging in get the Shibboleth Authenticated role via
-  AuthZ mapping.
-  [davidjb]
-- Add Shibboleth Authenticated role.
-  [davidjb]
-- Package created using templer
-  [davidjb]

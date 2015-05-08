@@ -17,21 +17,21 @@ def setup_product():
     # Load the ZCML configuration for this package and its dependencies
 
     fiveconfigure.debug_mode = True
-    import collective.aaf.portlets
-    zcml.load_config('configure.zcml', collective.aaf.portlets)
+    import collective.shibboleth.portlets
+    zcml.load_config('configure.zcml', collective.shibboleth.portlets)
     fiveconfigure.debug_mode = False
 
     # We need to tell the testing framework that these products
     # should be available. This can't happen until after we have loaded
     # the ZCML.
 
-    ztc.installPackage('collective.aaf.portlets')
+    ztc.installPackage('collective.shibboleth.portlets')
 
 # The order here is important: We first call the deferred function and then
 # let PloneTestCase install it during Plone site setup
 
 setup_product()
-ptc.setupPloneSite(products=['collective.aaf.portlets'])
+ptc.setupPloneSite(products=['collective.shibboleth.portlets'])
 
 
 class TestCase(ptc.PloneTestCase):

@@ -3,79 +3,98 @@
 Introduction
 ============
 
-This package provides an integration layer for Plone for the `Australian
-Access Federation <http://aaf.edu.au>`_ (AAF), a Shibboleth-powered
-authentication federation.
+This package provides the ability for Plone users to log into a site via
+Shibboleth, making use of the Shibboleth `Embedded Discovery Service`_ (EDS).
+This allows Plone to be a Shibboleth Service Provider (SP) and self-host a
+discovery service on the Plone login page.  A running Shibboleth responder,
+configured to provide a JSON Discovery Feed (``DiscoFeed`` handler) is
+required to populate the EDS listing.
+
+.. _Embedded Discovery Service: https://wiki.shibboleth.net/confluence/display/EDS10/
 
 Features
 ========
 
-Generic
--------
-
-The following features could and probably should be refactored into a 
-general ``collective.shibboleth`` package.  For the inclined, please contact
-us and we'll work through it together.
-
-* Embedded WAYF portlet (suitable for SWTICH-compatible Shibboleth Discovery
-  Services (such as SWITCHaai, Australian Access Federation (AAF), and possibly
-  more).
+* Provides fully-configurable Shibboleth EDS login portlet
+* Hosts Shibboleth EDS resources from within Plone
+* Integrates Shibboleth EDS styles with Plone's default Sunburst theme
 * Modifies login link to prevent login form appearing in an overlay, because
   the portlet requires JavaScript.
 * Adds a ``Shibboleth Authenticated`` role into Plone.
 * Assigns the ``Shibboleth Authenticated`` role to all users logging in
   using this method.
-
-
-AAF-Specific
-------------
-
-* Configures the underlying authentication plugin to load user data from
-  the relevant AAF attributes.
-* Portlet value defaults are those from the AAF.
+* Alerts the user on first login as to their local account's password.
+  Plone's PAS requires users have a password, and this allows Shibboleth users
+  to access Plone via WebDAV, FTP and other non-federation methods.
 
 Installation
 ============
 
-At the time of writing, this package relies upon one unreleased dependency:
+Installation with Plone follows the standard practice of modifying your
+Buildout configuration like so, adding this package to your list of eggs::
 
-* Products.AutoUserMakerPASPlugin
+    [instance]
+    recipe = plone.recipe.zope2instance
+    ...
+    eggs +=
+        collective.shibboleth
 
-A new version of this package will be released and available on PyPI
-as soon as possible.  In the meantime, installation from GitHub via a tool
-such as `mr.developer <https://pypi.python.org/pypi/mr.developer>`_ is
-recommended.
+You now need to ensure your Shibboleth responder is configured accordingly,
+see `Technical details`_.
 
-Techinical details
-==================
 
-Configuring Shibboleth (Shibd)
-------------------------------
+Technical details
+=================
 
-There are two ways you can authenticate users to your site using
-Shibboleth, either actively, by forcing a session for certain resources,
-or passively, by only passing through authentication information if a
-session exists.  More information about this in terms of Shibboleth
-can be found at https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPProtectContent.
+Your webserver and Shibboleth Service Provider (SP) must be configured in two ways:
 
-In a Plone context, using ``collective.aaf``, you thus have two choices:
+* With a Discovery Feed for the EDS. See `Configuring Shibboleth for the
+  EDS`_; and
+* To handle the login process and feed user attributes to Plone. See
+  `Shibboleth authentication configuration`_
 
-#. Configure Shibboleth and your front-end webserver to be **passively**
-   aware of your application. After an authentication session has been 
-   created, session details will automatically be added to incoming requests
-   for Plone to accept; or
+
+Configuring Shibboleth for the EDS
+----------------------------------
+
+Follow the instructions on the Shibboleth Wiki at
+https://wiki.shibboleth.net/confluence/display/EDS10/3.+Configuration under
+*Configuing the Service Provider*.  Your configuration may need to differ
+from the instructions given.  The one mandatory configuration step is setting
+up the ``DiscoveryFeed`` handler.
+
+Your EDS configuration options (set in ``idpselect_config.js``) are
+configured within Plone when you create the Shibboleth EDS portlet.
+
+
+Shibboleth authentication configuration
+---------------------------------------
+
+There are two ways you can authenticate users to your site using Shibboleth:
+either actively, by forcing a session for certain resources, or passively, by
+only passing through authentication information if a session exists.  More
+information about this in terms of Shibboleth can be found at
+https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPProtectContent.
+
+In a Plone context, using ``collective.shibboleth``, you thus have two choices:
+
+#. Configure Shibboleth and your front-end webserver to be **passively** aware
+   of your application. After an authentication session has been created,
+   session details will automatically be added to incoming requests for Plone
+   to accept; or
+
 #. Configure Shibboleth and your front-end webserver to **require** a session
    for all or part of your site's URLs.  When a user visits the relevant URL
    or path, authentication will be requested and the user redirected to the
    relevant Discovery Service.
 
-The first option is able to be more seamless as you can utilise a
-login portlet inside Plone, rather than having a jarring jump to a WAYF or IdP
-page. It also means you can provide an Identity Provider listing
-*embedded* within your site, making the login process as clean as possible.
 
-How Plone handles authentication
---------------------------------
+How Plone handles this authentication
+-------------------------------------
+
+The first option above is able to be more seamless as you can utilise a EDS
+login portlet inside Plone, rather than having a jarring jump to a Discovery
+Service or WAYF page.
 
 By default, the underlying PAS plugin (``Products.AutoUserMakerPASPlugin``)
 that listens for Shibboleth headers is configured to accept these on *any* site
@@ -85,40 +104,74 @@ and take over authentication from here on out whilst a user is logged in.
 
 To most efficiently manage this, the suggestion is to configure Shibboleth to
 protect just the ``logged_in`` view for Plone, and configure this URL as the
-return point (either via the WAYF portlet, or via a URL parameter). The
-built-in default for the WAYF portlet will do this for you automatically.
-This way, you can be sure that Shibboleth attributes will only be passed
-at this specific path (only used during login, typically),
-thus reducing the load time and processing required for the rest of the site.
+return point (either via the EDS portlet, or via a URL parameter). The EDS
+portlet will default to this automatically (but can be customised).  This way,
+you can be sure that Shibboleth attributes will only be passed into Plone when the user
+accesses this specific path.  As this path is typically only used during login,
+you'll be reducing the load time and processing required for the rest of the
+user's session.
+
+The suggested flow is thus:
+
+#. Configure Shibd Discovery Handler and protect ``/logged_in`` path with
+   Shibboleth.
+#. Install this package in Plone and configure the Shibboleth EDS portlet on
+   the pluggable login page.
+
+Now, when the user comes along:
+
+#. User clicks ``Login`` in Plone
+#. User is shown the EDS portlet, consisting of a list of Identity Providers
+   (IdPs)
+#. User selects an IdP and is taken to the IdP login page, or redirected
+   transparently if the user is already authenticated with their IdP.
+#. User is redirected back to Plone and logged in automatically. Behind the
+   scenes, Shibboleth has injected the attributes into the user's request to
+   ``logged_in`` and ``Products.AutoUserMakerPASPlugin`` has created that user
+   an account.
+
+The user's session has now been created and they're ready to use Plone without
+relying on Shibboleth attributes.
 
 .. note::
 
-   This configuration may or may not suit your exact requirements depending on
-   your configuration, federation (if not AAF), or other aspects. For example,
-   if you require that your user's authentication in Plone is directly tied to
-   their Shibboleth session, then you may wish to disable the Plone session
-   plugin's ability to ``authenticateCredentials`` and to configure the
-   Shibboleth SP such that the entire Plone URL/path is protected.  This will
-   result in the upstream Shibboleth instance passing along authentication
-   headers for every request.  Note that this is arguably ineffecient since
-   both the Shibboleth SP and Plone's user setup machinery are being invoked
-   for each and every request.
+   This configuration may or may not suit your requirements depending on your
+   site, security needs or federation.  This packages endeavours to fit all
+   requirements so please raise an issue about your specific situation.
+
+   For example, if you require that your user's authentication in Plone is
+   *directly* tied to their Shibboleth session, then you'll need to disable
+   the Plone session plugin's ability to ``authenticateCredentials`` and to
+   configure the Shibboleth SP such that the entire Plone URL/path is
+   protected.
+
+   This will result in the upstream Shibboleth instance passing along
+   authentication headers for every request.  Note that this is arguably
+   ineffecient since both the Shibboleth SP and Plone's user setup machinery
+   are being invoked or consulting for each and every request.
 
 
-Embedded WAYF portlet
----------------------
+About the included Embedded Discovery Service (EDS)
+---------------------------------------------------
 
-This package uses the Shibboleth Embedded WAYF as provided by:
+This package uses the Shibboleth EDS as provided by the main Shibboleth
+project.  Distributions of the EDS are available at
+http://download.opensuse.org/repositories/security:/shibboleth/ and the source
+is available from http://svn.shibboleth.net/view/js-embedded-discovery/.
 
-https://ds.aaf.edu.au/discovery/DS/embedded-wayf.js/snippet.html
-or 
-https://wayf.switch.ch/SWITCHaai/WAYF/embedded-wayf.js/snippet.html
+The EDS is configurable as the Shibboleth login portlet.  This portlet can be
+added to any page, though is most useful on the pluggable login page that is
+configured by this package.
 
-and is configurable in the Shibboleth portlet.  
+The included EDS distribution has been customised using the included patch
+file (``shibboleth-ds-plone.patch``) in the following ways:
 
-This could probably be refactored out into its own portlet later on. However,
-the Shibboleth project also has an `Embedded Discovery Service
-<https://wiki.shibboleth.net/confluence/display/EDS10/Embedded+Discovery+Service>`_
-that exists and can be self-hosted.  The portlet provided by this package
-will likely become modified to use this at some point in the near future.
+* Allow configuration of the EDS using a ``data-options`` attribute on the
+  DOM element.  Typically, the configuration function had to edited by hand.
+* Adjust or remove some styles that conflict with Plone's defaults.
+
+The patch is primarily required because the ``idpselect_config.js`` file
+hard-codes a large structure of language information.  We are working with the
+Shibboleth project on improving their JavaScript and incorporating the patch
+back upstream.
 

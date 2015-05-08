@@ -1,7 +1,7 @@
 <configure 
     xmlns="http://namespaces.zope.org/zope"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="collective.aaf">
+    i18n_domain="collective.shibboleth">
   <!-- Ensure Plone's portlets ZCML has already been processed; without
        this, we may get a permission lookup error
   -->
@@ -9,7 +9,7 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <plone:portlet
-      name="collective.aaf.portlets.ShibbolethLoginPortlet"
+      name="collective.shibboleth.portlets.ShibbolethLoginPortlet"
       interface=".shibbolethloginportlet.IShibbolethLoginPortlet"
       assignment=".shibbolethloginportlet.Assignment"
       view_permission="zope2.View"

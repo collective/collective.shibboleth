@@ -1,7 +1,7 @@
 # -*- extra stuff goes here -*-
 from zope.i18nmessageid import MessageFactory
 
-aafMessageFactory = MessageFactory('collective.aaf')
+shibbolethMessageFactory = MessageFactory('collective.shibboleth')
 
 
 def initialize(context):
