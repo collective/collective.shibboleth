@@ -1,0 +1,55 @@
+diff --git a/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css b/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
+index 157fb72..8460843 100644
+--- a/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
++++ b/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
+@@ -1,11 +1,8 @@
+ /* Top level is idpSelectIdPSelector */
+ #idpSelectIdPSelector
+ {
+-    width: 389px;
++    width: 100%;
+     text-align: left;
+-    background-color: #FFFFFF;
+-    border: 2px #A40000 solid;
+-    padding: 10px;
+ }
+ 
+ /* Next down are the idpSelectPreferredIdPTile, idpSelectIdPEntryTile & idpSelectIdPListTile */
+@@ -16,9 +13,10 @@
+  */
+ #idpSelectPreferredIdPTile
+ {
+-    height:138px; /* Force the height so that the  selector box
++    min-height:138px; /* Force the height so that the  selector box
+                    * goes below when there is only one preslect 
+                    */
++    margin-bottom:15px;
+ }
+ 
+ /***
+@@ -114,6 +112,7 @@ div.IdPSelectPreferredIdPButton div.IdPSelectTextDiv
+ #idpSelectIdPSelector a:link 
+ {
+     text-decoration: none;
++    border-bottom: 0 none;
+ }
+ 
+ #idpSelectIdPSelector a:visited 
+diff --git a/src/collective/shibboleth/browser/shibboleth-ds/idpselect_config.js b/src/collective/shibboleth/browser/shibboleth-ds/idpselect_config.js
+index d43a831..a3a6cc7 100644
+--- a/src/collective/shibboleth/browser/shibboleth-ds/idpselect_config.js
++++ b/src/collective/shibboleth/browser/shibboleth-ds/idpselect_config.js
+@@ -89,4 +89,13 @@ function IdPSelectUIParms(){
+     this.maxWidth = 115;
+     this.maxHeight = 69;
+     this.bestRatio = Math.log(80 / 60);
++
++    // Customise using the settings from the DOM
++    var idpSelect = document.getElementById('idpSelect');
++    var options = JSON.parse(idpSelect.getAttribute('data-options'));
++    for (var key in options) {
++        if (options.hasOwnProperty(key)) {
++            this[key] = options[key];
++        }
++    }
+ }

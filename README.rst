@@ -164,7 +164,8 @@ added to any page, though is most useful on the pluggable login page that is
 configured by this package.
 
 The included EDS distribution has been customised using the included patch
-file (``shibboleth-ds-plone.patch``) in the following ways:
+file (``src/collective/shibboleth/browser/shibboleth-ds-plone.patch``) in the
+following ways:
 
 * Allow configuration of the EDS using a ``data-options`` attribute on the
   DOM element.  Typically, the configuration function had to edited by hand.
@@ -174,4 +175,10 @@ The patch is primarily required because the ``idpselect_config.js`` file
 hard-codes a large structure of language information.  We are working with the
 Shibboleth project on improving their JavaScript and incorporating the patch
 back upstream.
+
+For now, to reapply the patch to a new version of the EDS, do::
+
+    cd src/collective/shibboleth/browser/
+    patch -p5 < shibboleth-ds-plone.patch
+    # Commit the result once patch is checked
 

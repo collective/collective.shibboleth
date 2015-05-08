@@ -1,10 +1,9 @@
+import json
 import re
-from zope.interface import Interface
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
 from plone.app.portlets.portlets import base
-from plone.app.portlets.portlets.login import Renderer as LoginPortletRenderer
 from plone.portlets.interfaces import IPortletDataProvider
 
 from zope import schema
@@ -13,7 +12,6 @@ from zope.formlib import form
 from zope.formlib.textwidgets import TextWidget
 from Products.CMFCore.Expression import createExprContext, Expression
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.PythonScripts.standard import html_quote
 
 from collective.shibboleth import shibbolethMessageFactory as _
 from collective.shibboleth import utils
@@ -42,44 +40,162 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     It inherits from IPortletDataProvider because for this portlet, the
     data that is being rendered and the portlet assignment itself are the
     same.
+
+    Mandatory default settings have not been included as they require
+    changes to the CSS and language settings have been excluded also.
     """
 
     header = schema.TextLine(
         title=__(u"Portlet header"),
         description=__(u"Title of the rendered portlet"),
         constraint=re.compile("[^\s]").match,
-        default=u"Australian Institutions Login",
+        default=u"Institutional Login",
         required=True)
 
-    wayf_URL = TALESTextLine(
-        title=_(u"WAYF Discovery URL (TALES)"),
-        description=_(u"URL of the WAYF to use"),
-        default=u"string:https://ds.aaf.edu.au/discovery/DS",
-        required=True)
-
-    wayf_sp_entityID = TALESTextLine(
-        title=_(u"Service Provider EntityID (TALES)"),
-        description=_(u"""
-EntityID of the Service Provider that protects this Resource.
-Value will be overwritten automatically if the page where the Embedded WAYF
-is displayed is called with a GET argument 'entityID' as automatically set by Shibboleth"""),
-        default=u"string:https://my-app.example.edu.au/shibboleth",
-        required=True)
-
-#// [Mandatory, if wayf_use_discovery_service = false]
-    wayf_sp_handlerURL = TALESTextLine(
+    sp_handlerURL = TALESTextLine(
         title=_(u"Service Provider Handler URL (TALES)"),
-        description=_(u"URL to the Shibboleth handler for the given Service Provider."),
+        description=_(u"URL to the Shibboleth handler for the given "
+                      u"Service Provider."),
         default=u"string:${portal_url}/Shibboleth.sso",
-        required=False)
-
-    wayf_return_url = TALESTextLine(
+        required=False
+    )
+    return_url = TALESTextLine(
         title=_(u"Return URL (TALES)"),
-        description=_(u"URL on this resource that the user shall be returned to after authentication"),
+        description=_(u"URL on this resource that the user shall be returned "
+                      u"to after authentication"),
         default=u"string:${view/return_url}",
-        required=True)
-
-
+        required=True
+    )
+    eds_alwaysShow = schema.Bool(
+        title=_(u"Always show results"),
+        description=_(u"If true, this will show results as soon as you start "
+                      u"typing."),
+        default=True,
+        required=False
+    )
+    # Intentially set as the portal_url as the default
+    eds_dataSource = TALESTextLine(
+        title=_(u"Data source (TALES)"),
+        description=_(u"URL to your JSON Shibboleth Discovery Feed."),
+        default=u"string:${portal_url}/Shibboleth.sso/DiscoFeed",
+        required=True
+    )
+    eds_defaultLanguage = TALESTextLine(
+        title=_(u"Default language (TALES)"),
+        description=_(u"Language to use if the browser local doesn't have "
+                      u"a bundle. Defaults to the current Plone language."),
+        default=u"string:${context/@@plone_portal_state/language}",
+        required=False
+    )
+    eds_defaultLogo = TALESTextLine(
+        title=_(u"Default logo (TALES)"),
+        description=_(u"Default logo to show for identity providers."),
+        default=u"string:${context/@@plone_portal_state/navigation_root_url}/++resource++collective.shibboleth/home-icon.png",
+        required=False
+    )
+    eds_defaultLogoWidth = schema.Int(
+        title=_(u"Default logo width"),
+        description=_(u"Width of default logo in pixels."),
+        default=90,
+        required=False
+    )
+    eds_defaultLogoHeight = schema.Int(
+        title=_(u"Default logo height"),
+        description=_(u"Height of default logo in pixels."),
+        default=80,
+        required=False
+    )
+    eds_defaultReturn = TALESTextLine(
+        title=_(u"Default return URL (TALES)"),
+        description=_(
+            u"URL to send users who login via the EDS interface. "
+            u"This portlet generates a dynamic return URL by default."),
+        default=u"string:${view/login_url}",
+        required=True
+    )
+    eds_defaultReturnIDParam = TALESTextLine(
+        title=_(u"Default return ID parameters (TALES)"),
+        required=False
+    )
+    eds_helpURL = TALESTextLine(
+        title=_(u"Help URL (TALES)"),
+        default=u"string:https://wiki.shibboleth.net/confluence/display/EDS10",
+        required=False
+    )
+    eds_ie6Hack = schema.List(
+        title=_(u"IE 6 hack"),
+        description=_(
+            u"An array of structures to disable when drawing the pull down "
+            u"(needed to handle the ie6 z axis problem)."),
+        value_type=schema.TextLine(),
+        required=False,
+    )
+    eds_insertAtDiv = schema.TextLine(
+        title=_(u"Insertion element ID"),
+        description=_(u"The div element ID where the EDS will be inserted."),
+        default=u"idpSelect",
+        required=True
+    )
+    eds_maxResults = schema.Int(
+        title=_(u"Maximum results"),
+        description=_(u"Number of results to show at once or the number at "
+                      u"which to start showing if alwaysShow is false."),
+        default=10,
+        required=True
+    )
+    eds_myEntityID = TALESTextLine(
+        title=_(u"Entity ID (TALES)"),
+        description=_(u"If specified, this must match the string provided in "
+                      u"the DS parameters."),
+        default=None,
+        required=False
+    )
+    eeds_preferredIdP = schema.List(
+        title=_(u"Preferred identity providers"),
+        description=_(u"List of entity IDs to always show."),
+        value_type=schema.TextLine(),
+        default=None,
+        required=False,
+    )
+    eeds_hiddenIdP = schema.List(
+        title=_(u"Hidden identity providers"),
+        description=_(u"List of entity IDs to delete."),
+        value_type=schema.TextLine(),
+        default=None,
+        required=False,
+    )
+    eds_ignoreKeywords = schema.Bool(
+        title=_(u"Ignore keywords"),
+        description=_(u"If true, ignore <mdui:Keywords/> when looking for "
+                      u"candidates."),
+        default=False,
+        required=False
+    )
+    # Requires Shibboleth EDS version >= 1.1.1  
+    # eds_showListFirst = schema.Bool(
+    #     title=_(u"Show list first"),
+    #     description=_(u"If true, start with a drop-down list of IdPs."),
+    #     default=False,
+    #     required=False
+    # )
+    eds_samlIdPCookieTTL = schema.Int(
+        title=_(u"IdP cookie expiration time"),
+        description=_(u"How long to remember identity providers (in days)."),
+        default=730,
+        required=False
+    )
+    # Requires Shibboleth EDS version >= 1.1.1  
+    # eds_setFocusTextBox = schema.Bool(
+    #     title=_(u"Initial focus on text box"),
+    #     description=_(u"If false, initial focus will be supressed."),
+    #     default=True,
+    #     required=False
+    # )
+    eds_testGUI = schema.Bool(
+        title=_(u"Enable test GUI"),
+        default=False,
+        required=False
+    )
 
 
 class Assignment(base.Assignment):
@@ -88,14 +204,7 @@ class Assignment(base.Assignment):
     This is what is actually managed through the portlets UI and associated
     with columns.
     """
-
     implements(IShibbolethLoginPortlet)
-
-    header = u"Australian Institutions Login"
-    wayf_URL = u"string:https://ds.aaf.edu.au/discovery/DS"
-    wayf_sp_entityID = u"string:https://my-app.example.edu.au/shibboleth"
-    wayf_sp_handlerURL = u"string:${portal_url}/Shibboleth.sso"
-    wayf_return_url = u"string:${view/return_url}"
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -107,7 +216,8 @@ class Assignment(base.Assignment):
         """
         return self.header
 
-def execute_expression(expr, folder, portal, object=None, **kwargs):
+
+def execute_expression(expr, folder, portal, context=None, **kwargs):
     """ Execute and expand a given TALES `expr`.
 
     Because the way in which portlets are rendered, the context needs
@@ -116,11 +226,13 @@ def execute_expression(expr, folder, portal, object=None, **kwargs):
     Also accepts arbitrary kwargs and applies them into the expression
     context for execution.
     """
-    ec = createExprContext(folder, portal, object)
+    ec = createExprContext(folder, portal, context)
     ec.contexts['context'] = ec.contexts['here']
+    ec.vars['context'] = ec.vars['here']
     for key, value in kwargs.iteritems():
         ec.setLocal(key, value)
     return Expression(expr)(ec)
+
 
 class Renderer(base.Renderer):
     """Portlet renderer.
@@ -150,14 +262,10 @@ class Renderer(base.Renderer):
         """ Execute an expression in the context of this renderer.
         """
         return execute_expression(value,
-                                  self.context,
-                                  self.portal,
+                                  folder=self.context,
+                                  portal=self.portal,
+                                  context=self.context,
                                   view=self)
-
-    def embed_url(self):
-        """ Generate the JavaScript embed URL for the federation.
-        """
-        return self._execute_expression(self.data.wayf_URL) + '/embedded-wayf.js'
 
     def login_url(self):
         """ Generate a suitable login URL for non-JavaScript users.
@@ -165,7 +273,7 @@ class Renderer(base.Renderer):
         The final ``target`` in the URL will be where the user is
         redirected to from Shibboleth.
         """
-        return self._execute_expression(self.data.wayf_sp_handlerURL) \
+        return self._execute_expression(self.data.sp_handlerURL) \
                 + '/Login?target=' + self.return_url()
 
     def return_url(self):
@@ -178,38 +286,30 @@ class Renderer(base.Renderer):
         url = self.portal_state.navigation_root_url() + '/logged_in'
         if self.request.QUERY_STRING:
             if self.request.QUERY_STRING.endswith('/logged_out'):
-                self.request.QUERY_STRING = self.request.QUERY_STRING.replace('/logged_out', '')
+                self.request.QUERY_STRING = \
+                    self.request.QUERY_STRING.replace('/logged_out', '')
             url += '?' + self.request.QUERY_STRING
         return url
 
-    def wayf_options(self):
-        """ Generate JavaScript variables for the Embedded WAYF script.
+    def embedded_ds_options(self):
+        """ Generate JSON configuration for the Embedded Discovery Service.
 
         Interpolates the TALES fields with the relevant values to produce
         suitable output variables for configuration.
         """
-        options = {
-            "defaultLogo": "/shibboleth-ds/home-icon.png",
-            "defaultLogoWidth": 90,
-            "defaultLogoHeight": 80,
-            "defaultReturn": self.return_url(),
-            "helpURL": 'https://espaces.edu.au/help'
-        }
+        options = {}
+        for name, field in \
+            schema.getFields(IShibbolethLoginPortlet).iteritems():
+            if name.startswith('eds_'):
+                value = getattr(self.data, name)
+                if value and ITALESTextLine.providedBy(field):
+                    value = self._execute_expression(value)
+                options[name[4:]] = value
+
         return json.dumps(options)
 
-        #output = ""
-        #for name, field in \
-            #schema.getFields(IShibbolethLoginPortlet).iteritems():
-            #if name.startswith('wayf_'):
-                #value = getattr(self.data, name)
-                #if ITALESTextLine.providedBy(field):
-                    #value = self._execute_expression(value)
-                #output += 'var %s = %s;\n' % (name,
-                                              #utils.escape_javascript(value))
-        #return output
 
-
-#Customise field display length
+# Customise field display length
 form_fields = form.Fields(IShibbolethLoginPortlet)
 for name, field in schema.getFields(IShibbolethLoginPortlet).iteritems():
     if ITextLine.providedBy(field):

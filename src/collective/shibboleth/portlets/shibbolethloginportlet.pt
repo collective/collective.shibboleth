@@ -1,7 +1,7 @@
 <tal:block condition="view/show"
            i18n:domain="collective.shibboleth">
 
-<link rel="stylesheet" type="text/css" href="/shibboleth-ds/idpselect.css">
+<link rel="stylesheet" type="text/css" href="++resource++shibboleth-ds/idpselect.css">
 <dl class="portlet portletShibbolethLoginPortlet"
     i18n:domain="collective.shibboleth">
 
@@ -17,13 +17,16 @@
     </dt>
 
     <dd class="portletItem odd">
-        <!--<script type="text/javascript" src="embedded-wayf.js"-->
-                <!--tal:attributes="src view/embed_url"></script>-->
-        <script id="shibboleth-embedded-ds-options" type="text/json" tal:content="view/embedded_ds_options">
-            // Embedded Discovery Service options go here
+        <div id="idpSelect" tal:attributes="data-options view/embedded_ds_options"></div>
+        <script src="++resource++shibboleth-ds/idpselect_config.js" type="text/javascript" language="javascript"></script>
+        <script src="++resource++shibboleth-ds/idpselect.js" type="text/javascript" language="javascript"></script>
+        <script type="text/javascript" language="javascript">
+            // Work around for https://issues.shibboleth.net/jira/browse/EDS-61
+            $(document).ready(function() {
+                $('.IdPSelectDropDownToggle').click(function() { return false; });
+
+            });
         </script>
-        <script src="/shibboleth-ds/idpselect_config.js" type="text/javascript" language="javascript"></script>
-        <script src="/shibboleth-ds/idpselect.js" type="text/javascript" language="javascript"></script>
         <noscript>
           <p>
           <strong>Login:</strong> Javascript is not available for your web browser. Therefore, please <a tal:attributes="href view/login_url" href="/Shibboleth.sso/Login?target=">proceed manually</a>.
