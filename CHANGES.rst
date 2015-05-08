@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
 1.5 (unreleased)
 ----------------
 
