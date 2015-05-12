@@ -14,7 +14,6 @@ from Products.CMFCore.Expression import createExprContext, Expression
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.shibboleth import shibbolethMessageFactory as _
-from collective.shibboleth import utils
 
 from zope.i18nmessageid import MessageFactory
 __ = MessageFactory("plone")
@@ -35,36 +34,27 @@ class LongTextWidget(TextWidget):
 
 
 class IShibbolethLoginPortlet(IPortletDataProvider):
-    """A portlet
-
-    It inherits from IPortletDataProvider because for this portlet, the
-    data that is being rendered and the portlet assignment itself are the
-    same.
+    """ Login portlet for Shibboleth EDS
 
     Mandatory default settings have not been included as they require
     changes to the CSS and language settings have been excluded also.
-    """
 
+    It inherits from IPortletDataProvider because for this portlet, the data
+    that is being rendered and the portlet assignment itself are the same.
+    """
     header = schema.TextLine(
         title=__(u"Portlet header"),
         description=__(u"Title of the rendered portlet"),
         constraint=re.compile("[^\s]").match,
-        default=u"Institutional Login",
-        required=True)
-
+        default=_(u"Institutional Login"),
+        required=True
+    )
     sp_handlerURL = TALESTextLine(
         title=_(u"Service Provider Handler URL (TALES)"),
         description=_(u"URL to the Shibboleth handler for the given "
                       u"Service Provider."),
         default=u"string:${portal_url}/Shibboleth.sso",
         required=False
-    )
-    return_url = TALESTextLine(
-        title=_(u"Return URL (TALES)"),
-        description=_(u"URL on this resource that the user shall be returned "
-                      u"to after authentication"),
-        default=u"string:${view/return_url}",
-        required=True
     )
     eds_alwaysShow = schema.Bool(
         title=_(u"Always show results"),
@@ -150,18 +140,16 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
         default=None,
         required=False
     )
-    eeds_preferredIdP = schema.List(
+    eds_preferredIdP = schema.List(
         title=_(u"Preferred identity providers"),
         description=_(u"List of entity IDs to always show."),
         value_type=schema.TextLine(),
-        default=None,
         required=False,
     )
-    eeds_hiddenIdP = schema.List(
+    eds_hiddenIdP = schema.List(
         title=_(u"Hidden identity providers"),
         description=_(u"List of entity IDs to delete."),
         value_type=schema.TextLine(),
-        default=None,
         required=False,
     )
     eds_ignoreKeywords = schema.Bool(
@@ -206,8 +194,33 @@ class Assignment(base.Assignment):
     """
     implements(IShibbolethLoginPortlet)
 
+    header = _(u"Institutional Login")
+    sp_handlerURL = u"string:${portal_url}/Shibboleth.sso"
+    eds_alwaysShow = True
+    eds_dataSource = u"string:${portal_url}/Shibboleth.sso/DiscoFeed"
+    eds_defaultLanguage = u"string:${context/@@plone_portal_state/language}"
+    eds_defaultLogo = u"string:${context/@@plone_portal_state/navigation_root_url}/++resource++collective.shibboleth/home-icon.png"
+    eds_defaultLogoWidth = 90
+    eds_defaultLogoHeight = 80
+    eds_defaultReturn = u"string:${view/login_url}"
+    eds_defaultReturnIDParam = None
+    eds_helpURL = u"string:https://wiki.shibboleth.net/confluence/display/EDS10"
+    eds_ie6Hack = None
+    eds_insertAtDiv = u"idpSelect"
+    eds_maxResults = 10
+    eds_myEntityID = None
+    eds_preferredIdP = None
+    eds_hiddenIdP = None
+    eds_ignoreKeywords = False
+    eds_samlIdPCookieTTL = 730
+    eds_testGUI = False
+
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
+        # List default arguments
+        for arg in ('eds_ie6Hack', 'eds_preferredIdP', 'eds_hiddenIdP'):
+            if kwargs.get(arg) is None:
+                setattr(self, arg, [])
 
     @property
     def title(self):
@@ -274,7 +287,7 @@ class Renderer(base.Renderer):
         redirected to from Shibboleth.
         """
         return self._execute_expression(self.data.sp_handlerURL) \
-                + '/Login?target=' + self.return_url()
+            + '/Login?target=' + self.return_url()
 
     def return_url(self):
         """ Generate a suitable return URL to the current context.

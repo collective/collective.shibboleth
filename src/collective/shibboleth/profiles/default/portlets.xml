@@ -20,4 +20,14 @@
      i18n:attributes="title; description"
    />
 
+   <assignment
+      name="navigation"
+      category="context"
+      key="/"
+      manager="collective.pluggablelogin"
+      type="collective.shibboleth.portlets.ShibbolethLoginPortlet"
+      insert-before="*"
+      visible="True">
+   </assignment>
+
 </portlets>

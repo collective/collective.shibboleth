@@ -18,6 +18,9 @@ Features
 * Provides fully-configurable Shibboleth EDS login portlet
 * Hosts Shibboleth EDS resources from within Plone
 * Integrates Shibboleth EDS styles with Plone's default Sunburst theme
+* Changes Plone's login page to be pluggable via
+  ``collective.pluggablelogin``.
+* Assigns a default Shibboleth EDS login portlet to the pluggable login page.
 * Modifies login link to prevent login form appearing in an overlay, because
   the portlet requires JavaScript.
 * Adds a ``Shibboleth Authenticated`` role into Plone.
