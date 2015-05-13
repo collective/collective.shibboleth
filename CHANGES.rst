@@ -4,6 +4,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Upgrade EDS to r150 for recent bug fixes.
+  [davidjb]
 - Assign a portlet onto the Pluggable Login page on installation.
   [davidjb]
 - Change from a Embedded WAYF to Shibboleth's EDS.

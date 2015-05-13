@@ -80,19 +80,19 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     eds_defaultLogo = TALESTextLine(
         title=_(u"Default logo (TALES)"),
         description=_(u"Default logo to show for identity providers."),
-        default=u"string:${context/@@plone_portal_state/navigation_root_url}/++resource++collective.shibboleth/home-icon.png",
+        default=u"string:blank.gif",
         required=False
     )
     eds_defaultLogoWidth = schema.Int(
         title=_(u"Default logo width"),
         description=_(u"Width of default logo in pixels."),
-        default=90,
+        default=1,
         required=False
     )
     eds_defaultLogoHeight = schema.Int(
         title=_(u"Default logo height"),
         description=_(u"Height of default logo in pixels."),
-        default=80,
+        default=1,
         required=False
     )
     eds_defaultReturn = TALESTextLine(
@@ -159,26 +159,24 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
         default=False,
         required=False
     )
-    # Requires Shibboleth EDS version >= 1.1.1  
-    # eds_showListFirst = schema.Bool(
-    #     title=_(u"Show list first"),
-    #     description=_(u"If true, start with a drop-down list of IdPs."),
-    #     default=False,
-    #     required=False
-    # )
+    eds_showListFirst = schema.Bool(
+        title=_(u"Show list first"),
+        description=_(u"If true, start with a drop-down list of IdPs."),
+        default=False,
+        required=False
+    )
     eds_samlIdPCookieTTL = schema.Int(
         title=_(u"IdP cookie expiration time"),
         description=_(u"How long to remember identity providers (in days)."),
         default=730,
         required=False
     )
-    # Requires Shibboleth EDS version >= 1.1.1  
-    # eds_setFocusTextBox = schema.Bool(
-    #     title=_(u"Initial focus on text box"),
-    #     description=_(u"If false, initial focus will be supressed."),
-    #     default=True,
-    #     required=False
-    # )
+    eds_setFocusTextBox = schema.Bool(
+        title=_(u"Initial focus on text box"),
+        description=_(u"If false, initial focus will be supressed."),
+        default=True,
+        required=False
+    )
     eds_testGUI = schema.Bool(
         title=_(u"Enable test GUI"),
         default=False,
@@ -199,9 +197,9 @@ class Assignment(base.Assignment):
     eds_alwaysShow = True
     eds_dataSource = u"string:${portal_url}/Shibboleth.sso/DiscoFeed"
     eds_defaultLanguage = u"string:${context/@@plone_portal_state/language}"
-    eds_defaultLogo = u"string:${context/@@plone_portal_state/navigation_root_url}/++resource++collective.shibboleth/home-icon.png"
-    eds_defaultLogoWidth = 90
-    eds_defaultLogoHeight = 80
+    eds_defaultLogo = u"string:blank.gif"
+    eds_defaultLogoWidth = 1
+    eds_defaultLogoHeight = 1
     eds_defaultReturn = u"string:${view/login_url}"
     eds_defaultReturnIDParam = None
     eds_helpURL = u"string:https://wiki.shibboleth.net/confluence/display/EDS10"
@@ -212,7 +210,9 @@ class Assignment(base.Assignment):
     eds_preferredIdP = None
     eds_hiddenIdP = None
     eds_ignoreKeywords = False
+    eds_showListFirst = False
     eds_samlIdPCookieTTL = 730
+    eds_setFocusTextBox = True
     eds_testGUI = False
 
     def __init__(self, **kwargs):
@@ -310,7 +310,8 @@ class Renderer(base.Renderer):
         Interpolates the TALES fields with the relevant values to produce
         suitable output variables for configuration.
         """
-        options = {}
+        # Ignore URL params by default for Plone Not Authorized redirects
+        options = {'ignoreURLParams': True}
         for name, field in \
             schema.getFields(IShibbolethLoginPortlet).iteritems():
             if name.startswith('eds_'):

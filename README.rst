@@ -42,8 +42,18 @@ Buildout configuration like so, adding this package to your list of eggs::
     eggs +=
         collective.shibboleth
 
-You now need to ensure your Shibboleth responder is configured accordingly,
-see `Technical details`_.
+Re-run Buildout, restart Plone and activate the add-on.  This will configure a
+default Shibboleth portlet on your login page.  You now need to ensure your
+Shibboleth responder is configured accordingly, see `Technical details`_.
+
+.. note::
+
+   The default Shibboleth EDS currently switches language based upon the
+   user's settings in their browser.  The default language setting in the
+   Shibboleth portlet within Plone configures the the current site settings as
+   default when the user's language isn't available. Note that language
+   support for the EDS is currently limited so you may need to adjust the
+   portlet's setting to pick a suitable fallback.
 
 
 Technical details
