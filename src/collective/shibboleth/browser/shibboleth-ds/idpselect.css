@@ -1,8 +1,11 @@
 /* Top level is idpSelectIdPSelector */
 #idpSelectIdPSelector
 {
-    width: 100%;
+    width: 389px;
     text-align: left;
+    background-color: #FFFFFF;
+    border: 2px #A40000 solid;
+    padding: 10px;
 }
 
 /* Next down are the idpSelectPreferredIdPTile, idpSelectIdPEntryTile & idpSelectIdPListTile */
@@ -13,7 +16,7 @@
  */
 #idpSelectPreferredIdPTile
 {
-    min-height:138px; /* Force the height so that the  selector box
+    height:138px; /* Force the height so that the  selector box
                    * goes below when there is only one preslect 
                    */
 }
@@ -120,7 +123,6 @@ div.IdPSelectPreferredIdPButton div.IdPSelectTextDiv
 #idpSelectIdPSelector a:link 
 {
     text-decoration: none;
-    border-bottom: 0 none;
 }
 
 #idpSelectIdPSelector a:visited 
@@ -200,9 +202,4 @@ div.IdPSelectDropDown div {
     background-color: #3366cc;
     color: white;
 }
-
 /* END */
-
-#idpSelectIdPEntryTile {
-    margin-top:15px;
-}
