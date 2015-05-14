@@ -172,6 +172,7 @@ ul.IdPSelectDropDown li {
     background-color: white;
     cursor: default;
     padding: 0px 3px;
+    display: block;
 }
 
 ul.IdPSelectDropDown li.IdPSelectCurrent {

@@ -5039,3 +5039,15 @@ index 440f661..4500063 100644
 +        }
 +    }
  }
+diff --git a/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css b/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
+index eed1533..71c0b4c 100644
+--- a/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
++++ b/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
+@@ -172,6 +172,7 @@ ul.IdPSelectDropDown li {
+     background-color: white;
+     cursor: default;
+     padding: 0px 3px;
++    display: block;
+ }
+ 
+ ul.IdPSelectDropDown li.IdPSelectCurrent {
