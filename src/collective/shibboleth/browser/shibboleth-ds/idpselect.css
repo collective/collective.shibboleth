@@ -203,6 +203,6 @@ div.IdPSelectDropDown div {
 }
 /* END */
 
-#idpSelectIdPEntryTile {
+#idpSelectIdPListTile, #idpSelectIdPEntryTile {
     margin-top:15px;
 }

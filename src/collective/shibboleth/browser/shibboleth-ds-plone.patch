@@ -5018,7 +5018,7 @@ index 91809fd..eed1533 100644
  }
  /* END */
 +
-+#idpSelectIdPEntryTile {
++#idpSelectIdPListTile, #idpSelectIdPEntryTile {
 +    margin-top:15px;
 +}
 diff --git a/src/collective/shibboleth/browser/shibboleth-ds/idpselect_config.js b/src/collective/shibboleth/browser/shibboleth-ds/idpselect_config.js
