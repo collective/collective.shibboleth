@@ -80,7 +80,7 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     eds_defaultLogo = TALESTextLine(
         title=_(u"Default logo (TALES)"),
         description=_(u"Default logo to show for identity providers."),
-        default=u"string:blank.gif",
+        default=u"string:${context/@@plone_portal_state/navigation_root_url}/++resource++shibboleth-ds/blank.gif",
         required=False
     )
     eds_defaultLogoWidth = schema.Int(
@@ -197,7 +197,7 @@ class Assignment(base.Assignment):
     eds_alwaysShow = True
     eds_dataSource = u"string:${portal_url}/Shibboleth.sso/DiscoFeed"
     eds_defaultLanguage = u"string:${context/@@plone_portal_state/language}"
-    eds_defaultLogo = u"string:blank.gif"
+    eds_defaultLogo = u"string:${context/@@plone_portal_state/navigation_root_url}/++resource++shibboleth-ds/blank.gif"
     eds_defaultLogoWidth = 1
     eds_defaultLogoHeight = 1
     eds_defaultReturn = u"string:${view/login_url}"

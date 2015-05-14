@@ -9,10 +9,4 @@
         directory="shibboleth-ds"
         />
 
-    <browser:resourceDirectory
-        name="collective.shibboleth"
-        directory="resources"
-        />
-
-
 </configure>
