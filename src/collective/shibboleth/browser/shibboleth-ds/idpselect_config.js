@@ -75,13 +75,4 @@ function IdPSelectUIParms(){
     this.maxWidth = 115;
     this.maxHeight = 69;
     this.bestRatio = Math.log(80 / 60);
-
-    // Customise using the settings from the DOM
-    var idpSelect = document.getElementById('idpSelect');
-    var options = JSON.parse(idpSelect.getAttribute('data-options'));
-    for (var key in options) {
-        if (options.hasOwnProperty(key)) {
-            this[key] = options[key];
-        }
-    }
 }
