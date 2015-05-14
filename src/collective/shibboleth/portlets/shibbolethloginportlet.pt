@@ -1,7 +1,10 @@
 <tal:block condition="view/show"
+           define="navroot context/@@plone_portal_state/navigation_root_url"
            i18n:domain="collective.shibboleth">
 
-<link rel="stylesheet" type="text/css" href="++resource++shibboleth-ds/idpselect.css">
+<link rel="stylesheet"
+      type="text/css"
+      tal:attributes="href string:${navroot}/++resource++shibboleth-ds/idpselect.css">
 <dl class="portlet portletShibbolethLoginPortlet"
     i18n:domain="collective.shibboleth">
 
@@ -18,8 +21,12 @@
 
     <dd class="portletItem odd">
         <div id="idpSelect" tal:attributes="data-options view/embedded_ds_options"></div>
-        <script src="++resource++shibboleth-ds/idpselect_config.js" type="text/javascript" language="javascript"></script>
-        <script src="++resource++shibboleth-ds/idpselect.js" type="text/javascript" language="javascript"></script>
+        <script type="text/javascript"
+                language="javascript"
+                tal:attributes="src string:${navroot}/++resource++shibboleth-ds/idpselect_config.js"></script>
+        <script type="text/javascript"
+                language="javascript"
+                tal:attributes="src string:${navroot}/++resource++shibboleth-ds/idpselect.js"></script>
         <noscript>
           <p>
           <strong>Login:</strong> Javascript is not available for your web browser. Therefore, please <a tal:attributes="href view/login_url" href="/Shibboleth.sso/Login?target=">proceed manually</a>.
