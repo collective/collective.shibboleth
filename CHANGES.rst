@@ -4,7 +4,7 @@ Changelog
 1.0 (unreleased)
 ----------------
 
-- Upgrade EDS to r150 for recent bug fixes.
+- Upgrade EDS to r151 for recent bug fixes.
   [davidjb]
 - Assign a portlet onto the Pluggable Login page on installation.
   [davidjb]
