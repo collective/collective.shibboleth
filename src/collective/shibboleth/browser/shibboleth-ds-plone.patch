@@ -24,15 +24,6 @@ index 91809fd..fc4d460 100644
                     * goes below when there is only one preslect 
                     */
  }
-@@ -94,7 +91,7 @@ div.IdPSelectPreferredIdPButton div.IdPSelectTextDiv
-  */
- #idpSelectInput, #idpSelectSelector
- {
--    width: 80%;
-+    width: auto;
- }
- /*
-  * For some reason a <select> width includes the border and an
 @@ -109,7 +106,6 @@ div.IdPSelectPreferredIdPButton div.IdPSelectTextDiv
  #idpSelectSelectButton, #idpSelectListButton
  {

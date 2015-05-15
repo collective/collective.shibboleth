@@ -91,7 +91,7 @@ div.IdPSelectPreferredIdPButton div.IdPSelectTextDiv
  */
 #idpSelectInput, #idpSelectSelector
 {
-    width: auto;
+    width: 80%;
 }
 /*
  * For some reason a <select> width includes the border and an
