@@ -74,3 +74,19 @@ index 440f661..4500063 100644
 +        }
 +    }
  }
+diff --git a/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css b/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
+index e9ca3c5..e976bde 100644
+--- a/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
++++ b/src/collective/shibboleth/browser/shibboleth-ds/idpselect.css
+@@ -107,11 +107,6 @@ div.IdPSelectPreferredIdPButton div.IdPSelectTextDiv
+ {
+     margin-left: 5px;
+ }
+-#idpSelectSelectButton
+-{
+-    padding-left: 2px;
+-    padding-right: 2px;
+-}
+ 
+ /*
+  * change underlining of HREFS
