@@ -18,6 +18,7 @@ function IdPSelectUI() {
     var maxWidth;
     var maxHeight;
     var bestRatio;
+    var doNotCollapse;
 
     //
     // Parameters passed into our closure
@@ -148,6 +149,12 @@ function IdPSelectUI() {
         maxWidth = paramsSupplied.maxWidth;
         maxHeight = paramsSupplied.maxHeight;
         bestRatio = paramsSupplied.bestRatio;
+        if (null == paramsSupplied.doNotCollapse) { 
+            doNotCollapse = true;
+        } else {
+            doNotCollapse = paramsSupplied.doNotCollapse;
+        }
+            
         maxIdPCharsButton = paramsSupplied.maxIdPCharsButton;
         maxIdPCharsDropDown = paramsSupplied.maxIdPCharsDropDown;
         maxIdPCharsAltTxt = paramsSupplied.maxIdPCharsAltTxt;
@@ -704,7 +711,7 @@ function IdPSelectUI() {
             return false;
         }
 
-        var atLeastOneImg = false;
+        var atLeastOneImg = doNotCollapse;
         for(var i = 0 ; i < maxPreferredIdPs && i < preferredIdPs.length; i++){
             if (preferredIdPs[i] && getImageForIdP(preferredIdPs[i], false)) {
                 atLeastOneImg = true;
@@ -832,7 +839,7 @@ function IdPSelectUI() {
         a.onclick = function() { 
             idpEntryDiv.style.display='none';
             setSelector(idpSelect, hidden.value);
-            idpListDiv.style.display='inline';
+            idpListDiv.style.display=null;
             listButton.focus();
             return false;
         };
@@ -922,7 +929,7 @@ function IdPSelectUI() {
         a.href = '#';
         setClass(a, 'DropDownToggle');
         a.onclick = function() { 
-            idpEntryDiv.style.display='inline';
+            idpEntryDiv.style.display=null;
             idpListDiv.style.display='none';
             return false;
         };
