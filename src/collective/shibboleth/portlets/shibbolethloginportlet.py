@@ -51,14 +51,14 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     )
     sp_handlerURL = TALESTextLine(
         title=_(u"Service Provider Handler URL (TALES)"),
-        description=_(u"URL to the Shibboleth handler for the given "
-                      u"Service Provider."),
+        description=_(u"URL of the Shibboleth handler for the given "
+                      u"Service Provider (SP) responder."),
         default=u"string:${portal_url}/Shibboleth.sso",
         required=False
     )
     eds_alwaysShow = schema.Bool(
         title=_(u"Always show results"),
-        description=_(u"If true, this will show results as soon as you start "
+        description=_(u"If true, results will be shown as soon as you start "
                       u"typing."),
         default=True,
         required=False
@@ -66,20 +66,21 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     # Intentially set as the portal_url as the default
     eds_dataSource = TALESTextLine(
         title=_(u"Data source (TALES)"),
-        description=_(u"URL to your JSON Shibboleth Discovery Feed."),
+        description=_(u"URL of your JSON Shibboleth Discovery Feed."),
         default=u"string:${portal_url}/Shibboleth.sso/DiscoFeed",
         required=True
     )
     eds_defaultLanguage = TALESTextLine(
         title=_(u"Default language (TALES)"),
-        description=_(u"Language to use if the browser local doesn't have "
-                      u"a bundle. Defaults to the current Plone language."),
+        description=_(u"Language to use if the browser's language isn't "
+                      u"supported by the EDS. Defaults to the current Plone "
+                      u"language."),
         default=u"string:${context/@@plone_portal_state/language}",
         required=False
     )
     eds_defaultLogo = TALESTextLine(
         title=_(u"Default logo (TALES)"),
-        description=_(u"Default logo to show for identity providers."),
+        description=_(u"Default logo to show for Identity Providers listed."),
         default=u"string:${context/@@plone_portal_state/navigation_root_url}/++resource++shibboleth-ds/blank.gif",
         required=False
     )
@@ -99,7 +100,8 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
         title=_(u"Default return URL (TALES)"),
         description=_(
             u"URL to send users who login via the EDS interface. "
-            u"This portlet generates a dynamic return URL by default."),
+            u"This portlet generates a dynamic return URL by default "
+            u"which handles return URLs and query strings."),
         default=u"string:${view/login_url}",
         required=True
     )
@@ -136,26 +138,28 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     eds_myEntityID = TALESTextLine(
         title=_(u"Entity ID (TALES)"),
         description=_(u"If specified, this must match the string provided in "
-                      u"the DS parameters."),
+                      u"the Discovery Service (DS) parameters."),
         default=None,
         required=False
     )
     eds_preferredIdP = schema.List(
         title=_(u"Preferred identity providers"),
-        description=_(u"List of entity IDs to always show."),
+        description=_(u"List of entity IDs to always show as preferred "
+                      u"organisations."),
         value_type=schema.TextLine(),
         required=False,
     )
     eds_hiddenIdP = schema.List(
         title=_(u"Hidden identity providers"),
-        description=_(u"List of entity IDs to delete."),
+        description=_(u"List of entity IDs to always hide from the list of "
+                      u"preferred organisations."),
         value_type=schema.TextLine(),
         required=False,
     )
     eds_ignoreKeywords = schema.Bool(
         title=_(u"Ignore keywords"),
-        description=_(u"If true, ignore <mdui:Keywords/> when looking for "
-                      u"candidates."),
+        description=_(u"If true, ignore the mdui:Keywords tag when looking "
+                      u"for candidates."),
         default=False,
         required=False
     )
@@ -173,7 +177,7 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
     )
     eds_setFocusTextBox = schema.Bool(
         title=_(u"Initial focus on text box"),
-        description=_(u"If false, initial focus will be supressed."),
+        description=_(u"If not set, initial focus will be supressed."),
         default=True,
         required=False
     )
@@ -348,7 +352,6 @@ class AddForm(base.AddForm):
 # NOTE: IF this portlet does not have any configurable parameters, you can
 # remove this class definition and delete the editview attribute from the
 # <plone:portlet /> registration in configure.zcml
-
 class EditForm(base.EditForm):
     """Portlet edit form.
 
