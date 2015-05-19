@@ -186,6 +186,14 @@ class IShibbolethLoginPortlet(IPortletDataProvider):
         default=False,
         required=False
     )
+    eds_doNotCollapse = schema.Bool(
+        title=_(u"Always show logos"),
+        description=_(u"If not set, default logos will be hidden if "
+                      u"none of the preferred Identity Providers have a "
+                      u"logo."),
+        default=True,
+        required=False
+    )
 
 
 class Assignment(base.Assignment):
@@ -218,6 +226,7 @@ class Assignment(base.Assignment):
     eds_samlIdPCookieTTL = 730
     eds_setFocusTextBox = True
     eds_testGUI = False
+    eds_doNotCollapse = False
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
