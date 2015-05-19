@@ -839,7 +839,7 @@ function IdPSelectUI() {
         a.onclick = function() { 
             idpEntryDiv.style.display='none';
             setSelector(idpSelect, hidden.value);
-            idpListDiv.style.display=null;
+            idpListDiv.style.display='';
             listButton.focus();
             return false;
         };
@@ -929,7 +929,7 @@ function IdPSelectUI() {
         a.href = '#';
         setClass(a, 'DropDownToggle');
         a.onclick = function() { 
-            idpEntryDiv.style.display=null;
+            idpEntryDiv.style.display='';
             idpListDiv.style.display='none';
             return false;
         };
