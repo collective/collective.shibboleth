@@ -12,6 +12,17 @@ required to populate the EDS listing.
 
 .. _Embedded Discovery Service: https://wiki.shibboleth.net/confluence/display/EDS10/
 
+In Action
+=========
+
+.. image:: https://github.com/collective/collective.shibboleth/blob/master/docs/screenshot.png?raw=true
+   :scale: 75%
+   :alt: EDS login portlet within Plone.
+
+``collective.shibboleth``'s EDS portlet in action, being used with the
+Australian and New Zealand Access Federations.
+
+
 Features
 ========
 
