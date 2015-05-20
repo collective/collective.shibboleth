@@ -55,6 +55,10 @@ Shibboleth responder is configured accordingly, see `Technical details`_.
    support for the EDS is currently limited so you may need to adjust the
    portlet's setting to pick a suitable fallback.
 
+You may use Plone's GenericSetup infrastructure within another package or site
+policy product to either reconfigure this default portlet or to create your
+own.
+
 
 Technical details
 =================
