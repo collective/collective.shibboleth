@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.2 (unreleased)
-----------------
+1.1.1 (unreleased)
+------------------
 
-- Nothing changed yet.
+- Minor changes to readme and package description.
+  [davidjb]
 
 
 1.1 (2015-05-20)
@@ -16,7 +17,7 @@ Changelog
 1.0 (2015-05-20)
 ----------------
 
-- Upgrade EDS to r151 for recent bug fixes.
+- Upgrade EDS to r157 for recent bug fixes.
   [davidjb]
 - Assign a portlet onto the Pluggable Login page on installation.
   [davidjb]
