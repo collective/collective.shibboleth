@@ -24,7 +24,7 @@ Australian and New Zealand Access Federations.  The icons shown will
 automatically display an organisation's logo if provided within SAML metadata.
 At present, neither of these example federations support the relevant
 `metadata extensions
-<https://wiki.shibboleth.net/confluence/display/EDS10/4.+Metadata+Considerations>`
+<https://wiki.shibboleth.net/confluence/display/EDS10/4.+Metadata+Considerations>`_
 and default to showing no logo.
 
 
