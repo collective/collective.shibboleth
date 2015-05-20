@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os
 
 version = '1.1.dev0'
 
@@ -13,21 +12,22 @@ long_description = (
 
 setup(name='collective.shibboleth',
       version=version,
-      description="Authentication integration layer for the Australian Access Federation (AAF) and Plone",
+      description="Authentication integration layer for Shibboleth's "
+                  "Embdedded Discovery Service (EDS) and Plone",
       long_description=long_description,
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
-        "Environment :: Web Environment",
-        "Operating System :: OS Independent",
-        "Framework :: Zope2",
-        "Framework :: Plone",
-        "Framework :: Plone :: 4.2",
-        "Framework :: Plone :: 4.3",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2.6",
-        "Programming Language :: Python :: 2.7",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+          "Environment :: Web Environment",
+          "Operating System :: OS Independent",
+          "Framework :: Zope2",
+          "Framework :: Plone",
+          "Framework :: Plone :: 4.2",
+          "Framework :: Plone :: 4.3",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 2.6",
+          "Programming Language :: Python :: 2.7",
+          "Topic :: Software Development :: Libraries :: Python Modules",
       ],
       keywords='plone discovery service shibboleth authentication',
       author='David Beitey',
@@ -49,7 +49,7 @@ setup(name='collective.shibboleth',
       ],
       extras_require={'test': ['plone.app.testing']},
       entry_points="""
-      # -*- Entry points: -*- 
+      # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
       target = plone
       """

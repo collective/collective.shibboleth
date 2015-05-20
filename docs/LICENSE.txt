@@ -1,4 +1,4 @@
-collective.aaf Copyright 2013, David Beitey
+collective.shibboleth Copyright 2015, David Beitey
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
