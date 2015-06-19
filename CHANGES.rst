@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.2 (unreleased)
+1.1.2 (2015-06-19)
 ------------------
 
 - Fix issue with users not returning to ``came_from`` URL if they were
