@@ -10,38 +10,44 @@ Index: src/javascript/idpselect.js
          var isPassive = false;
          var parms;
          var parmPair;
-@@ -257,10 +258,15 @@
+@@ -257,10 +258,17 @@
              }
  
              for (i = 0; i < parms.length; i++) {
 -                parmPair = parms[i].split('=');
 -                if (parmPair.length != 2) {
+-                    continue;
 +                //
-+                // Do not use split('='), '=' may be present in the param value
++                // Process url encoding parameters according to URL whatwg standard
 +                //
 +                splitIndex = parms[i].indexOf('=');
 +                if (splitIndex < 0) {
-                     continue;
++                    parmPair = [parms[i], ''];
++                } else {
++                    parmPair = [parms[i].substring(0, splitIndex), parms[i].substring(splitIndex+1)];
++
                  }
-+                parmPair = [parms[i].substring(0, splitIndex), parms[i].substring(splitIndex+1)];
 +
                  if (parmPair[0] == 'entityID') {
                      suppliedEntityId = decodeURIComponent(parmPair[1]);
                  } else if (parmPair[0] == 'return') {
-@@ -329,10 +335,15 @@
+@@ -329,10 +337,17 @@
          parmlist = returnString.substring(i+1);
          parms = parmlist.split('&');
          for (i = 0; i < parms.length; i++) {
 -            parmPair = parms[i].split('=');
 -            if (parmPair.length != 2) {
+-                continue;
 +            //
-+            // Do not use split('='), '=' may be present in the param value
++            // Process url encoding parameters according to URL whatwg standard
 +            //
 +            splitIndex = parms[i].indexOf('=');
 +            if (splitIndex < 0) {
-                 continue;
++                parmPair = [parms[i], ''];
++            } else {
++                parmPair = [parms[i].substring(0, splitIndex), parms[i].substring(splitIndex+1)];
++
              }
-+            parmPair = [parms[i].substring(0, splitIndex), parms[i].substring(splitIndex+1)];
 +
              parmPair[1] = decodeURIComponent(parmPair[1]);
              returnParms.push(parmPair);

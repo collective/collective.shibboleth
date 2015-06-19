@@ -4,7 +4,8 @@ Changelog
 1.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Further fix query string parsing in the EDS.
+  [davidjb]
 
 
 1.1.2 (2015-06-19)
