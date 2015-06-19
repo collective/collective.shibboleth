@@ -4,7 +4,10 @@ Changelog
 1.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix issue with users not returning to ``came_from`` URL if they were
+  prompted to login.  This fix will be incorporated upstream in the EDS
+  shortly.
+  [davidjb]
 
 
 1.1.1 (2015-05-20)
