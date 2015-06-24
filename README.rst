@@ -215,3 +215,22 @@ For now, to reapply the patch to a new version of the EDS, do::
     patch -p5 < shibboleth-ds-plone.patch
     # Commit the result once patch is checked
 
+
+Updating the EDS in this package
+================================
+
+In order to update the EDS JavaScript widget, update the submodule at
+``./src/collective/shibboleth/browser/js-embedded-discovery`` and commit the
+change in tracked versions to this repository.
+
+You then need to build the EDS and place the compiled files into the relevant
+location in this package::
+
+    cd src/collective/shibboleth/browser/js-embedded-discovery
+    make kit
+    cp -R shibboleth-embedded-ds-*/*{nonminimised,gif,js,css} ../shibboleth-ds/
+    make clean
+
+Now, go and update the change log for ``collective.shibboleth`` and commit the
+results.
+

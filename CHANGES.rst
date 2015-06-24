@@ -6,6 +6,8 @@ Changelog
 
 - Further fix query string parsing in the EDS.
   [davidjb]
+- Add EDS (now hosted in Git) as a submodule for tracking.
+  [davidjb]
 
 
 1.1.2 (2015-06-19)

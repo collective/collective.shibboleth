@@ -1,0 +1,3 @@
+[submodule "src/collective/shibboleth/browser/js-embedded-discovery"]
+	path = src/collective/shibboleth/browser/js-embedded-discovery
+	url = https://github.com/espaces/js-embedded-discovery.git
