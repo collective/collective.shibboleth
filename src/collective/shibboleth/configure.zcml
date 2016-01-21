@@ -28,6 +28,14 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+    <genericsetup:importStep
+        name="collective-shibboleth-various"
+        title="collective.shibboleth Various"
+        description="Various setup for collective.shibboleth"
+        handler=".setuphandlers.setupVarious">
+    </genericsetup:importStep>
+
+
   <!-- -*- extra stuff goes here -*- -->
 
   <include package=".browser" />

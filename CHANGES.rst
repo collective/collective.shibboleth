@@ -8,6 +8,8 @@ Changelog
   [davidjb]
 - Add EDS (now hosted in Git) as a submodule for tracking.
   [davidjb]
+- Changed `various` import step to be ZCML configured.
+  [davidjb]
 
 
 1.1.2 (2015-06-19)
