@@ -190,7 +190,8 @@ About the included Embedded Discovery Service (EDS)
 This package uses the Shibboleth EDS as provided by the main Shibboleth
 project.  Distributions of the EDS are available at
 http://download.opensuse.org/repositories/security:/shibboleth/ and the source
-is available from http://svn.shibboleth.net/view/js-embedded-discovery/.
+is available from
+http://git.shibboleth.net/view/?p=js-embedded-discovery.git;a=summary.
 
 The EDS is configurable as the Shibboleth login portlet.  This portlet can be
 added to any page, though is most useful on the pluggable login page that is
