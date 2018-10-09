@@ -47,7 +47,12 @@ setup(name='collective.shibboleth',
           'Products.AutoUserMakerPASPlugin>=1.0dev',
           # -*- Extra requirements: -*-
       ],
-      extras_require={'test': ['plone.app.testing']},
+      extras_require={'test':
+        [
+            'plone.app.testing',
+            'Products.PloneTestCase'
+        ]
+      },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]

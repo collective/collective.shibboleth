@@ -9,7 +9,7 @@ from plone.portlets.interfaces import IPortletRenderer
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from collective.shibboleth.portlets import shibbolethloginportlet
-from collective.shibboleth.portlets.tests.base_shibbolethloginportlet import TestCase
+from collective.shibboleth.tests.base_shibbolethloginportlet import TestCase
 
 
 class TestPortlet(TestCase):
