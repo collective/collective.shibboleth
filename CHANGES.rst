@@ -4,7 +4,8 @@ Changelog
 1.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add zope.formlib to dependencies for Plone 5.x.
+  [timo]
 
 
 1.2 (2016-01-21)

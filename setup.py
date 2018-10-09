@@ -45,6 +45,7 @@ setup(name='collective.shibboleth',
           'collective.monkeypatcher',
           'collective.pluggablelogin>=1.1',
           'Products.AutoUserMakerPASPlugin>=1.0dev',
+          'zope.formlib',
           # -*- Extra requirements: -*-
       ],
       extras_require={'test':
