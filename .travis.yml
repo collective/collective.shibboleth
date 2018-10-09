@@ -17,10 +17,10 @@ dist: trusty
 before_install:
   - mkdir -p $HOME/buildout-cache/{eggs,downloads}
   - virtualenv .
-  - bin/pip install --upgrade -r requirements.txt
+  - bin/pip install -r requirements.txt
 install:
   - sed -ie "s#plone-4.3.x.cfg#plone-$PLONE_VERSION.cfg#" buildout.cfg
-  - bin/buildout -N -t 20
+  - bin/buildout
 script:
 #  - bin/code-analysis
   - bin/test
