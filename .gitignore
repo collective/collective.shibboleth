@@ -1,3 +1,8 @@
+.Python
+.eggs/
+include/
+lib/
+pip-selfcheck.json
 *~
 *.pyc
 *.pyo

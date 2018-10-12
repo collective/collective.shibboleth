@@ -1,0 +1,27 @@
+language: python
+# with next we get on container based infrastructure, this enables caching
+sudo: false
+python:
+  - 2.7.15
+cache:
+  pip: true
+  directories:
+    - $HOME/buildout-cache
+env:
+  - PLONE_VERSION=4.3.x
+  - PLONE_VERSION=5.0.x
+  - PLONE_VERSION=5.1.x
+matrix:
+  allow_failures:
+    - env: PLONE_VERSION=5.1.x
+dist: trusty
+before_install:
+  - mkdir -p $HOME/buildout-cache/{eggs,downloads}
+  - virtualenv .
+  - bin/pip install -r requirements.txt
+install:
+  - sed -ie "s#plone-4.3.x.cfg#plone-$PLONE_VERSION.cfg#" buildout.cfg
+  - bin/buildout
+script:
+#  - bin/code-analysis
+  - bin/test

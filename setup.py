@@ -45,9 +45,15 @@ setup(name='collective.shibboleth',
           'collective.monkeypatcher',
           'collective.pluggablelogin>=1.1',
           'Products.AutoUserMakerPASPlugin>=1.0dev',
+          'zope.formlib',
           # -*- Extra requirements: -*-
       ],
-      extras_require={'test': ['plone.app.testing']},
+      extras_require={'test':
+        [
+            'plone.app.testing',
+            'Products.PloneTestCase'
+        ]
+      },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
